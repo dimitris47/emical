@@ -412,15 +412,8 @@ public class Emical extends Application {
             journal.initOwner(stage);
             journal.show();
         }
-        else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Απουσία ημερολογίου");
-            alert.setHeaderText("Δεν υπάρχει ημερολόγιο");
-            alert.setContentText("Δεν έχει εισαχθεί ακόμη κάποιο συμβάν.\n" +
-                    "Για να γίνει εκκίνηση του ημερολογίου, πρέπει πρώτα να εισάγετε ένα συμβάν.");
-            alert.initOwner(stage);
-            alert.showAndWait();
-        }
+        else
+            noCalendar(stage);
     }
 
     private void read() throws IOException {
@@ -539,6 +532,18 @@ public class Emical extends Application {
             alert.initOwner(stage);
             alert.showAndWait();
         }
+        else
+            noCalendar(stage);
+    }
+
+    private void noCalendar(Stage stage) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Απουσία ημερολογίου");
+        alert.setHeaderText("Δεν υπάρχει ημερολόγιο");
+        alert.setContentText("Δεν έχει εισαχθεί ακόμη κάποιο συμβάν.\n" +
+                "Για να γίνει εκκίνηση του ημερολογίου, πρέπει πρώτα να εισάγετε ένα συμβάν.");
+        alert.initOwner(stage);
+        alert.showAndWait();
     }
 
     private boolean isChecked(String kind) {
