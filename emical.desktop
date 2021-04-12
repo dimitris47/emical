@@ -1,8 +1,8 @@
 [Desktop Entry]
 Name=Emical
-Exec=java -jar '/home/jim/Software/Developing/Java-GUI/emical/EmiCal.jar'
+Exec=java -jar '${PATH_TO_JARFILE_DIR}/EmiCal.jar'
 Comment=
 Terminal=false
-Icon=/home/jim/Software/Developing/2_icons/cross.png
+Icon=${PATH_TO_ICON_DIR}/cross.png
 Type=Application
 StartupWMClass=com.dimitris47.emical.Emical
