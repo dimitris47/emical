@@ -1,10 +1,6 @@
 package com.dimitris47.emical;
 
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.pdf.PdfWriter;
 import javafx.application.Application;
 import javafx.geometry.*;
 import javafx.scene.Scene;
@@ -351,12 +347,12 @@ public class Emical extends Application {
         String textToExport = "Ημερολόγιο:" + textToExtract + "\n" +
                 "Στατιστικά:\n" + createStats();
 
-        Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("migraineCalendar.pdf"));
-        document.open();
-        Chunk chunk = new Chunk(textToExport, FontFactory.getFont(FontFactory.HELVETICA, "UTF_8", 14));
-        document.add(chunk);
-        document.close();
+//        Document document = new Document();
+//        PdfWriter.getInstance(document, new FileOutputStream("migraineCalendar.pdf"));
+//        document.open();
+//        Chunk chunk = new Chunk(textToExport, FontFactory.getFont(FontFactory.HELVETICA, 14));
+//        document.add(chunk);
+//        document.close();
     }
 
     private void aboutClicked(Stage stage) {
