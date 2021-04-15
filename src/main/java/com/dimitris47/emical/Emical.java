@@ -49,7 +49,7 @@ public class Emical extends Application {
     CheckBox depon, ponstan, algofren, imigran, other;
     TextField otherMed;
     TextArea notes;
-    Button saveEvent, openJournal, stats, info;
+    Button saveEvent, openJournal, stats, export, info;
 
     ArrayList<RadioButton> radios;
     ArrayList<String> radioTexts, symptomTexts, boxTexts, mediTexts;
@@ -80,7 +80,7 @@ public class Emical extends Application {
             sizeFactor = 1.2;
         }
         defFont = Font.font("Segoe UI", FontWeight.NORMAL, fontSize);
-        defWidth = 440 * sizeFactor;
+        defWidth = 460 * sizeFactor;
         defHeight = 528 * sizeFactor;
         Insets ins = new Insets(0, 0, 0, 8 * sizeFactor);
 
@@ -224,17 +224,18 @@ public class Emical extends Application {
         mediBoxes.add(algofren);
         imigran = new CheckBox("Imigran");
         mediBoxes.add(imigran);
-        other = new CheckBox();
+        other = new CheckBox("Άλλο");
+        other.setFont(defFont);
         for (var box : mediBoxes) {
             box.setAllowIndeterminate(false);
             box.setFont(defFont);
         }
         otherMed = new TextField();
-        otherMed.setPromptText("άλλο (διευκρινήστε)");
+        otherMed.setPromptText("διευκρινήστε");
         otherMed.setFont(defFont);
         HBox mediBox = new HBox();
         mediBox.setSpacing(12);
-        mediBox.setAlignment(Pos.CENTER);
+        mediBox.setAlignment(Pos.CENTER_LEFT);
         mediBox.getChildren().addAll(depon, ponstan, algofren, imigran, other, otherMed);
 
         notes = new TextArea();
@@ -266,9 +267,16 @@ public class Emical extends Application {
             catch (IOException ioException) { ioException.printStackTrace(); }
         });
 
+        export = new Button("Εξαγωγή PDF");
+        export.setFont(defFont);
+        Tooltip tip = new Tooltip("Εξαγωγή του ημερολογίου και των στατιστικών σε PDF");
+        tip.setFont(defFont);
+        export.setTooltip(tip);
+        export.setOnAction(e -> extractPDF());
+
         HBox buttons = new HBox();
         buttons.setSpacing(8);
-        buttons.getChildren().addAll(saveEvent, openJournal, stats);
+        buttons.getChildren().addAll(saveEvent, openJournal, stats, export);
 
         Separator sep3 = new Separator();
         sep3.setOrientation(Orientation.HORIZONTAL);
@@ -319,6 +327,10 @@ public class Emical extends Application {
         read();
         stage.setOnCloseRequest(e -> setPrefs(stage));
         stage.show();
+    }
+
+    private void extractPDF() {
+        System.out.println("Making PDF file...");
     }
 
     private void aboutClicked(Stage stage) {
