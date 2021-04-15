@@ -272,7 +272,10 @@ public class Emical extends Application {
         Tooltip tip = new Tooltip("Εξαγωγή του ημερολογίου και των στατιστικών σε PDF");
         tip.setFont(defFont);
         export.setTooltip(tip);
-        export.setOnAction(e -> extractPDF());
+        export.setOnAction(e -> {
+            try { extractPDF(); }
+            catch (IOException ioException) { ioException.printStackTrace(); }
+        });
 
         HBox buttons = new HBox();
         buttons.setSpacing(8);
@@ -329,8 +332,20 @@ public class Emical extends Application {
         stage.show();
     }
 
-    private void extractPDF() {
-        System.out.println("Making PDF file...");
+    private void extractPDF() throws IOException {
+        System.out.println("getting text for pdf...");
+        File file = new File("migraineCalendar.txt");
+        StringBuilder textToExtract = new StringBuilder();
+        if (file.exists()) {
+            InputStream in = new FileInputStream("migraineCalendar.txt");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+            String line;
+            while ((line = reader.readLine()) != null)
+                textToExtract.append(line.concat("\n"));
+        }
+        final String textToExport = "Ημερολόγιο:" + textToExtract + "\n" +
+                "Στατιστικά:\n";
+        System.out.println(textToExport);
     }
 
     private void aboutClicked(Stage stage) {
