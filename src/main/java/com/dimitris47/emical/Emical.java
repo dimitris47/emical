@@ -344,7 +344,7 @@ public class Emical extends Application {
                 textToExtract.append(line.concat("\n"));
         }
         final String textToExport = "Ημερολόγιο:" + textToExtract + "\n" +
-                "Στατιστικά:\n";
+                "Στατιστικά:\n" + createStats();
         System.out.println(textToExport);
     }
 
@@ -491,72 +491,75 @@ public class Emical extends Application {
     }
 
     private void getStats(Stage stage) throws IOException {
-        double events = 0;
-        double left = 0, front = 0, right = 0, combination = 0;
-        double aura = 0, photo = 0, sound = 0, vertigo = 0, nausea = 0;
-        double neck = 0, sleep = 0, stress = 0, fatigue = 0;
-        read();
         File f = new File("migraineCalendar.txt");
         if (f.exists()) {
-            InputStream in = new FileInputStream("migraineCalendar.txt");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.startsWith("Συμβάν"))
-                    events++;
-                if (line.startsWith("-- αριστερά"))
-                    left++;
-                if (line.startsWith("-- μπροστά"))
-                    front++;
-                if (line.startsWith("-- δεξιά"))
-                    right++;
-                if (line.startsWith("-- συνδυασμός"))
-                    combination++;
-                if (line.startsWith("-- αύρα"))
-                    aura++;
-                if (line.startsWith("-- φωτοφοβία"))
-                    photo++;
-                if (line.startsWith("-- ηχοφοβία"))
-                    sound++;
-                if (line.startsWith("-- ίλιγγος"))
-                    vertigo++;
-                if (line.startsWith("-- ναυτία/έμετος"))
-                    nausea++;
-                if (line.startsWith("-- αυχένας"))
-                    neck++;
-                if (line.startsWith("-- κακός ύπνος"))
-                    sleep++;
-                if (line.startsWith("-- άγχος/στρες"))
-                    stress++;
-                if (line.startsWith("-- κόπωση"))
-                    fatigue++;
-            }
-
-            String statistics = "Μέσος όρος διάρκειας: " + df.format(meanDuration) + " ώρες\n" +
-                    "Μέσος όρος έντασης: " + df.format(meanIntensity) + "\n" +
-                    "Αριστερά: " + df.format(left / events * 100L) + "%\n" +
-                    "Μπροστά: " + df.format(front / events * 100L) + "%\n" +
-                    "Δεξιά: " + df.format(right / events * 100L) + "%\n" +
-                    "Συνδυασμός: " + df.format(combination / events * 100L) + "%\n" +
-                    "Αύρα: " + df.format(aura / events * 100L) + "%\n" +
-                    "Φωτοφοβία: " + df.format(photo / events * 100L) + "%\n" +
-                    "Ηχοφοβία: " + df.format(sound / events * 100L) + "%\n" +
-                    "Ίλιγγος: " + df.format(vertigo / events * 100L) + "%\n" +
-                    "Ναυτία/έμετος: " + df.format(nausea / events * 100L) + "%\n" +
-                    "Αυχένας: " + df.format(neck / events * 100L) + "%\n" +
-                    "Κακός ύπνος: " + df.format(sleep / events * 100L) + "%\n" +
-                    "Άγχος/στρες: " + df.format(stress / events * 100L) + "%\n" +
-                    "Κόπωση: " + df.format(fatigue / events * 100L) + "%\n";
-
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Στατιστικά");
             alert.setHeaderText("Στατιστικά κεφαλαλγίας");
-            alert.setContentText(statistics);
+            alert.setContentText(createStats());
             alert.initOwner(stage);
             alert.showAndWait();
         }
         else
             noCalendar(stage);
+    }
+
+    private String createStats() throws IOException {
+        double events = 0;
+        double left = 0, front = 0, right = 0, combination = 0;
+        double aura = 0, photo = 0, sound = 0, vertigo = 0, nausea = 0;
+        double neck = 0, sleep = 0, stress = 0, fatigue = 0;
+        read();
+
+        InputStream in = new FileInputStream("migraineCalendar.txt");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (line.startsWith("Συμβάν"))
+                events++;
+            if (line.startsWith("-- αριστερά"))
+                left++;
+            if (line.startsWith("-- μπροστά"))
+                front++;
+            if (line.startsWith("-- δεξιά"))
+                right++;
+            if (line.startsWith("-- συνδυασμός"))
+                combination++;
+            if (line.startsWith("-- αύρα"))
+                aura++;
+            if (line.startsWith("-- φωτοφοβία"))
+                photo++;
+            if (line.startsWith("-- ηχοφοβία"))
+                sound++;
+            if (line.startsWith("-- ίλιγγος"))
+                vertigo++;
+            if (line.startsWith("-- ναυτία/έμετος"))
+                nausea++;
+            if (line.startsWith("-- αυχένας"))
+                neck++;
+            if (line.startsWith("-- κακός ύπνος"))
+                sleep++;
+            if (line.startsWith("-- άγχος/στρες"))
+                stress++;
+            if (line.startsWith("-- κόπωση"))
+                fatigue++;
+        }
+
+        return "Μέσος όρος διάρκειας: " + df.format(meanDuration) + " ώρες\n" +
+                "Μέσος όρος έντασης: " + df.format(meanIntensity) + "\n" +
+                "Αριστερά: " + df.format(left / events * 100L) + "%\n" +
+                "Μπροστά: " + df.format(front / events * 100L) + "%\n" +
+                "Δεξιά: " + df.format(right / events * 100L) + "%\n" +
+                "Συνδυασμός: " + df.format(combination / events * 100L) + "%\n" +
+                "Αύρα: " + df.format(aura / events * 100L) + "%\n" +
+                "Φωτοφοβία: " + df.format(photo / events * 100L) + "%\n" +
+                "Ηχοφοβία: " + df.format(sound / events * 100L) + "%\n" +
+                "Ίλιγγος: " + df.format(vertigo / events * 100L) + "%\n" +
+                "Ναυτία/έμετος: " + df.format(nausea / events * 100L) + "%\n" +
+                "Αυχένας: " + df.format(neck / events * 100L) + "%\n" +
+                "Κακός ύπνος: " + df.format(sleep / events * 100L) + "%\n" +
+                "Άγχος/στρες: " + df.format(stress / events * 100L) + "%\n" +
+                "Κόπωση: " + df.format(fatigue / events * 100L) + "%\n";
     }
 
     private void noCalendar(Stage stage) {
