@@ -1,5 +1,10 @@
 package com.dimitris47.emical;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfWriter;
 import javafx.application.Application;
 import javafx.geometry.*;
 import javafx.scene.Scene;
@@ -25,6 +30,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.prefs.Preferences;
+
+import static com.itextpdf.text.FontFactory.*;
 
 public class Emical extends Application {
     Preferences prefs;
@@ -274,7 +281,7 @@ public class Emical extends Application {
         export.setTooltip(tip);
         export.setOnAction(e -> {
             try { extractPDF(); }
-            catch (IOException ioException) { ioException.printStackTrace(); }
+            catch (IOException | DocumentException ioException) { ioException.printStackTrace(); }
         });
 
         HBox buttons = new HBox();
@@ -332,8 +339,7 @@ public class Emical extends Application {
         stage.show();
     }
 
-    private void extractPDF() throws IOException {
-        System.out.println("getting text for pdf...");
+    private void extractPDF() throws IOException, DocumentException {
         File file = new File("migraineCalendar.txt");
         StringBuilder textToExtract = new StringBuilder();
         if (file.exists()) {
@@ -343,9 +349,16 @@ public class Emical extends Application {
             while ((line = reader.readLine()) != null)
                 textToExtract.append(line.concat("\n"));
         }
-        final String textToExport = "Ημερολόγιο:" + textToExtract + "\n" +
+
+        String textToExport = "Ημερολόγιο:" + textToExtract + "\n" +
                 "Στατιστικά:\n" + createStats();
-        System.out.println(textToExport);
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream("migraineCalendar.pdf"));
+        document.open();
+        com.itextpdf.text.Font pdfFont = getFont(HELVETICA, 16, BaseColor.BLACK);
+        Chunk chunk = new Chunk(textToExport, pdfFont);
+        document.add(chunk);
+        document.close();
     }
 
     private void aboutClicked(Stage stage) {
