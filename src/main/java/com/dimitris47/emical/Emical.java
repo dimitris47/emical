@@ -47,6 +47,7 @@ public class Emical extends Application {
     CheckBox aura, photophobia, soundSens, vertigo, nausea;
     CheckBox neck, badSleep, stress, fatigue;
     CheckBox depon, ponstan, algofren, imigran, other;
+    TextField otherMed;
     TextArea notes;
     Button saveEvent, openJournal, stats, info;
 
@@ -79,7 +80,7 @@ public class Emical extends Application {
             sizeFactor = 1.2;
         }
         defFont = Font.font("Segoe UI", FontWeight.NORMAL, fontSize);
-        defWidth = 408 * sizeFactor;
+        defWidth = 440 * sizeFactor;
         defHeight = 528 * sizeFactor;
         Insets ins = new Insets(0, 0, 0, 8 * sizeFactor);
 
@@ -223,15 +224,19 @@ public class Emical extends Application {
         mediBoxes.add(algofren);
         imigran = new CheckBox("Imigran");
         mediBoxes.add(imigran);
-        other = new CheckBox("Άλλο");
+        other = new CheckBox();
         mediBoxes.add(other);
         for (var box : mediBoxes) {
             box.setAllowIndeterminate(false);
             box.setFont(defFont);
         }
+        otherMed = new TextField();
+        otherMed.setPromptText("άλλο (διευκρινήστε)");
+        otherMed.setFont(defFont);
         HBox mediBox = new HBox();
         mediBox.setSpacing(12);
-        mediBox.getChildren().addAll(depon, ponstan, algofren, imigran, other);
+        mediBox.setAlignment(Pos.CENTER);
+        mediBox.getChildren().addAll(depon, ponstan, algofren, imigran, other, otherMed);
 
         notes = new TextArea();
         notes.setFont(defFont);
