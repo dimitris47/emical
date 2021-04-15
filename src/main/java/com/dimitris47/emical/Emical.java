@@ -268,13 +268,13 @@ public class Emical extends Application {
             catch (IOException ioException) { ioException.printStackTrace(); }
         });
 
-        export = new Button("Εξαγωγή PDF");
+        export = new Button("Εξαγωγή σε αρχείο");
         export.setFont(defFont);
-        Tooltip tip = new Tooltip("Εξαγωγή του ημερολογίου και των στατιστικών σε PDF");
+        Tooltip tip = new Tooltip("Εξαγωγή του ημερολογίου και των στατιστικών σε αρχείο κειμένου");
         tip.setFont(defFont);
         export.setTooltip(tip);
         export.setOnAction(e -> {
-            try { extractPDF(); }
+            try { exportPDF(); }
             catch (IOException | DocumentException ioException) { ioException.printStackTrace(); }
         });
 
@@ -333,7 +333,7 @@ public class Emical extends Application {
         stage.show();
     }
 
-    private void extractPDF() throws IOException, DocumentException {
+    private void exportPDF() throws IOException, DocumentException {
         File file = new File("migraineCalendar.txt");
         StringBuilder textToExtract = new StringBuilder();
         if (file.exists()) {
@@ -347,12 +347,6 @@ public class Emical extends Application {
         String textToExport = "Ημερολόγιο:" + textToExtract + "\n" +
                 "Στατιστικά:\n" + createStats();
 
-//        Document document = new Document();
-//        PdfWriter.getInstance(document, new FileOutputStream("migraineCalendar.pdf"));
-//        document.open();
-//        Chunk chunk = new Chunk(textToExport, FontFactory.getFont(FontFactory.HELVETICA, 14));
-//        document.add(chunk);
-//        document.close();
     }
 
     private void aboutClicked(Stage stage) {
