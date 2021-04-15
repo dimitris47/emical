@@ -66,8 +66,8 @@
                         <configuration>
                             <!-- mandatory -->
                             <mainClass>com.dimitris47.emical.Launcher</mainClass>
-                            <organizationName>DP Software</organizationName>
                             <!-- optional -->
+                            <organizationName>DP Software</organizationName>
                             <bundleJre>true</bundleJre>
                             <generateInstaller>true</generateInstaller>
                             <administratorRequired>false</administratorRequired>

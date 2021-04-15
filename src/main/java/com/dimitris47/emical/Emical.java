@@ -36,36 +36,23 @@ public class Emical extends Application {
     int newEventDuration, newEventIntensity, daysPassed;
     double meanDuration, meanIntensity;
 
-    DatePicker calendar;
-    Label lblDuration;
-    Spinner<Integer> spinner;
-    Label lblIntensity;
-    Slider intensitySlider;
-
-    Label place;
-    ArrayList<RadioButton> radios;
-    RadioButton radLeft, radCenter, radRight, radCombined;
-    ArrayList<String> radioTexts;
-
-    Label symptoms;
-    ArrayList<CheckBox> symptomBoxes;
-    CheckBox aura, photophobia, soundSens, vertigo, nausea;
-    ArrayList<String> symptomTexts;
-
-    Label factors;
-    ArrayList<CheckBox> factorBoxes;
-    CheckBox neck, badSleep, stress, fatigue;
-    ArrayList<String> boxTexts;
-
-    Label medications;
-    ArrayList<CheckBox> mediBoxes;
-    CheckBox depon, ponstan, algofren, imigran, other;
-    ArrayList<String> mediTexts;
-
-    TextArea notes;
-    Button saveEvent, openJournal, stats;
+    Label lblDuration, lblIntensity;
+    Label place, symptoms, factors, medications;
     Label savedInfo, evPerMonth, durMean, intMean;
-    Button info;
+
+    DatePicker calendar;
+    Spinner<Integer> spinner;
+    Slider intensitySlider;
+    RadioButton radLeft, radCenter, radRight, radCombined;
+    CheckBox aura, photophobia, soundSens, vertigo, nausea;
+    CheckBox neck, badSleep, stress, fatigue;
+    CheckBox depon, ponstan, algofren, imigran, other;
+    TextArea notes;
+    Button saveEvent, openJournal, stats, info;
+
+    ArrayList<RadioButton> radios;
+    ArrayList<String> radioTexts, symptomTexts, boxTexts, mediTexts;
+    ArrayList<CheckBox> symptomBoxes, factorBoxes, mediBoxes;
 
     MigraineEvent migev;
 
@@ -257,17 +244,15 @@ public class Emical extends Application {
         saveEvent.setFont(defFont);
         saveEvent.setOnAction(e -> {
             update();
-            try {
-                doIO();
-            } catch (IOException ioException) { ioException.printStackTrace(); }
+            try { doIO(); }
+            catch (IOException ioException) { ioException.printStackTrace(); }
         });
 
         openJournal = new Button("Άνοιγμα ημερολογίου");
         openJournal.setFont(defFont);
         openJournal.setOnAction(e -> {
-            try {
-                readJournal(stage);
-            } catch (IOException ioException) { ioException.printStackTrace(); }
+            try { readJournal(stage); }
+            catch (IOException ioException) { ioException.printStackTrace(); }
         });
 
         stats = new Button("Στατιστικά");

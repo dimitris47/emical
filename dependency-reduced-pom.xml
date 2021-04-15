@@ -37,11 +37,11 @@
             </goals>
             <configuration>
               <mainClass>com.dimitris47.emical.Launcher</mainClass>
+              <organizationName>DP Software</organizationName>
               <bundleJre>true</bundleJre>
               <generateInstaller>true</generateInstaller>
               <administratorRequired>false</administratorRequired>
               <platform>auto</platform>
-              <organizationName>DP Software</organizationName>
             </configuration>
           </execution>
         </executions>
