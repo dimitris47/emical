@@ -274,7 +274,7 @@ public class Emical extends Application {
         tip.setFont(defFont);
         export.setTooltip(tip);
         export.setOnAction(e -> {
-            try { exportPDF(); }
+            try { exportTxt(stage); }
             catch (IOException | DocumentException ioException) { ioException.printStackTrace(); }
         });
 
@@ -333,7 +333,7 @@ public class Emical extends Application {
         stage.show();
     }
 
-    private void exportPDF() throws IOException, DocumentException {
+    private void exportTxt(Stage stage) throws IOException, DocumentException {
         File file = new File("migraineCalendar.txt");
         StringBuilder textToExtract = new StringBuilder();
         if (file.exists()) {
@@ -343,10 +343,29 @@ public class Emical extends Application {
             while ((line = reader.readLine()) != null)
                 textToExtract.append(line.concat("\n"));
         }
-
         String textToExport = "Ημερολόγιο:" + textToExtract + "\n" +
                 "Στατιστικά:\n" + createStats();
 
+        File exp = new File("migraineReport.txt");
+        Alert alert;
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(exp, false))) {
+            bw.write(textToExport);
+            alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Εξαγωγή αρχείου");
+            alert.setHeaderText("Αποθήκευση αρχείου");
+            alert.setContentText("Το αρχείο αποθηκεύτηκε με επιτυχία.");
+            alert.initOwner(stage);
+            alert.showAndWait();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Εξαγωγή αρχείου");
+            alert.setHeaderText("Αποτυχία δημιουργίας αρχείου");
+            alert.setContentText("Δεν ήταν δυνατή η επιτυχής δημιουργία του αρχείου.");
+            alert.initOwner(stage);
+            alert.showAndWait();
+        }
     }
 
     private void aboutClicked(Stage stage) {
