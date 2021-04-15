@@ -225,7 +225,6 @@ public class Emical extends Application {
         imigran = new CheckBox("Imigran");
         mediBoxes.add(imigran);
         other = new CheckBox();
-        mediBoxes.add(other);
         for (var box : mediBoxes) {
             box.setAllowIndeterminate(false);
             box.setFont(defFont);
@@ -567,9 +566,15 @@ public class Emical extends Application {
             return boxTexts != null;
         }
         if (kind.equals("medi")) {
-            for (var box : mediBoxes)
+            for (var box : mediBoxes) {
                 if (box.isSelected())
                     mediTexts.add(box.getText());
+            }
+            if (other.isSelected())
+                if (!otherMed.getText().isEmpty())
+                    mediTexts.add(otherMed.getText());
+                else
+                    mediTexts.add("άλλο φάρμακο");
             return mediTexts != null;
         }
         return false;
