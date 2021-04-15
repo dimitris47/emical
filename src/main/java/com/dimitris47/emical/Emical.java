@@ -1,9 +1,9 @@
 package com.dimitris47.emical;
 
-import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.pdf.PdfWriter;
 import javafx.application.Application;
 import javafx.geometry.*;
@@ -30,8 +30,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.prefs.Preferences;
-
-import static com.itextpdf.text.FontFactory.*;
 
 public class Emical extends Application {
     Preferences prefs;
@@ -352,11 +350,11 @@ public class Emical extends Application {
 
         String textToExport = "Ημερολόγιο:" + textToExtract + "\n" +
                 "Στατιστικά:\n" + createStats();
+
         Document document = new Document();
         PdfWriter.getInstance(document, new FileOutputStream("migraineCalendar.pdf"));
         document.open();
-        com.itextpdf.text.Font pdfFont = getFont(HELVETICA, 16, BaseColor.BLACK);
-        Chunk chunk = new Chunk(textToExport, pdfFont);
+        Chunk chunk = new Chunk(textToExport, FontFactory.getFont(FontFactory.HELVETICA, "UTF_8", 14));
         document.add(chunk);
         document.close();
     }
