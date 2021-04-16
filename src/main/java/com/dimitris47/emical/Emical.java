@@ -1,6 +1,5 @@
 package com.dimitris47.emical;
 
-import com.itextpdf.text.DocumentException;
 import javafx.application.Application;
 import javafx.geometry.*;
 import javafx.scene.Scene;
@@ -275,7 +274,7 @@ public class Emical extends Application {
         export.setTooltip(tip);
         export.setOnAction(e -> {
             try { exportTxt(stage); }
-            catch (IOException | DocumentException ioException) { ioException.printStackTrace(); }
+            catch (IOException ioException) { ioException.printStackTrace(); }
         });
 
         HBox buttons = new HBox();
@@ -333,7 +332,7 @@ public class Emical extends Application {
         stage.show();
     }
 
-    private void exportTxt(Stage stage) throws IOException, DocumentException {
+    private void exportTxt(Stage stage) throws IOException {
         File file = new File("migraineCalendar.txt");
         StringBuilder textToExtract = new StringBuilder();
         if (file.exists()) {
