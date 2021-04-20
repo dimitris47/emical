@@ -483,7 +483,7 @@ public class Emical extends Application {
                 daysPassed = period.getYears() * 365 + period.getMonths() * 30 + period.getDays() + 1;
                 String calStarted = "\n(το ημερολόγιο ξεκίνησε στις " +
                         firstDate.getDayOfMonth() + "-" + firstDate.getMonthValue() + "-" + firstDate.getYear() + ")";
-                if (daysPassed < 15)
+                if (daysPassed < 30)
                     evPerMonth.setText("Συμβάντα έως σήμερα: " + lines.size() + calStarted);
                 else
                     evPerMonth.setText("Συμβάντα ανά 30 ημέρες: " +
