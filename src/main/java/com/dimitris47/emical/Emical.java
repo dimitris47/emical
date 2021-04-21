@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 
@@ -150,13 +151,10 @@ public class Emical extends Application {
         radios = new ArrayList<>();
         ToggleGroup toggleGroup = new ToggleGroup();
         radLeft = new RadioButton("αριστερά");
-        radios.add(radLeft);
         radCenter = new RadioButton("μπροστά");
-        radios.add(radCenter);
         radRight = new RadioButton("δεξιά");
-        radios.add(radRight);
         radCombined = new RadioButton("συνδυασμός");
-        radios.add(radCombined);
+        radios.addAll(Arrays.asList(radLeft, radCenter, radRight, radCombined));
         for (var radio : radios) {
             radio.setToggleGroup(toggleGroup);
             radio.setFont(defFont);
@@ -171,13 +169,10 @@ public class Emical extends Application {
         aura = new CheckBox("αύρα");
         symptomBoxes.add(aura);
         photophobia = new CheckBox("φωτοφοβία");
-        symptomBoxes.add(photophobia);
         soundSens = new CheckBox("ηχοφοβία");
-        symptomBoxes.add(soundSens);
         vertigo = new CheckBox("ίλιγγος");
-        symptomBoxes.add(vertigo);
         nausea = new CheckBox("ναυτία/έμετος");
-        symptomBoxes.add(nausea);
+        symptomBoxes.addAll(Arrays.asList(aura, photophobia, soundSens, vertigo, nausea));
         for (var box : symptomBoxes) {
             box.setAllowIndeterminate(false);
             box.setFont(defFont);
@@ -194,13 +189,10 @@ public class Emical extends Application {
         factors.setFont(defFont);
         factorBoxes = new ArrayList<>();
         neck = new CheckBox("αυχένας");
-        factorBoxes.add(neck);
         badSleep = new CheckBox("κακός ύπνος");
-        factorBoxes.add(badSleep);
         stress = new CheckBox("άγχος/στρες");
-        factorBoxes.add(stress);
         fatigue = new CheckBox("κόπωση");
-        factorBoxes.add(fatigue);
+        factorBoxes.addAll(Arrays.asList(neck, badSleep, stress, fatigue));
         for (var box : factorBoxes) {
             box.setAllowIndeterminate(false);
             box.setFont(defFont);
@@ -217,13 +209,10 @@ public class Emical extends Application {
         medications.setFont(defFont);
         mediBoxes = new ArrayList<>();
         depon = new CheckBox("Depon");
-        mediBoxes.add(depon);
         ponstan = new CheckBox("Ponstan");
-        mediBoxes.add(ponstan);
         algofren = new CheckBox("Algofren");
-        mediBoxes.add(algofren);
         imigran = new CheckBox("Imigran");
-        mediBoxes.add(imigran);
+        mediBoxes.addAll(Arrays.asList(depon, ponstan, algofren, imigran));
         other = new CheckBox("Άλλο");
         other.setFont(defFont);
         for (var box : mediBoxes) {
