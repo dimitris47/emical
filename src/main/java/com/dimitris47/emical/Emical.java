@@ -311,6 +311,7 @@ public class Emical extends Application {
 
         Scene scene = new Scene(box, defWidth, defHeight);
         stage.setScene(scene);
+        stage.getIcons().add(new Image("cross.png"));
         stage.setMinWidth(defWidth);
         stage.setMinHeight(defHeight);
         stage.setTitle("Emical");
