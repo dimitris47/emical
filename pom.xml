@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.dimitris47</groupId>
-    <artifactId>EmiCal</artifactId>
+    <artifactId>emical</artifactId>
     <version>1.0</version>
 
     <properties>
@@ -65,18 +65,14 @@
                             <goal>package</goal>
                         </goals>
                         <configuration>
-                            <!-- mandatory -->
                             <mainClass>com.dimitris47.emical.Launcher</mainClass>
-                            <!-- optional -->
                             <organizationName>DP Software</organizationName>
                             <bundleJre>true</bundleJre>
-<!--                            <iconFile>target/assets/windows/EmiCal.ico</iconFile>-->
-<!--                            <iconFile>target/assets/linux/EmiCal.png</iconFile>-->
                             <linuxConfig>
-                                <pngFile>target/assets/linux/EmiCal.png</pngFile>
+                                <pngFile>target/assets/linux/emical.png</pngFile>
                             </linuxConfig>
                             <winConfig>
-                                <icoFile>target/assets/linux/EmiCal.ico</icoFile>
+                                <icoFile>target\assets\windows\emical.ico</icoFile>
                             </winConfig>
                             <generateInstaller>true</generateInstaller>
                             <administratorRequired>false</administratorRequired>

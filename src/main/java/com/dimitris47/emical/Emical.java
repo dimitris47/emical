@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -60,12 +59,6 @@ public class Emical extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        String OS = System.getProperty("os.name");
-        if (OS.contains("Windows"))
-            stage.getIcons().add(new Image("file:EmiCal.ico"));
-        else if (OS.contains("Linux"))
-            stage.getIcons().add(new Image("file:EmiCal.png"));
-
         prefs = Preferences.userNodeForPackage(Emical.class);
         DecimalFormatSymbols dfSymbols = new DecimalFormatSymbols(Locale.getDefault());
         dfSymbols.setDecimalSeparator(',');
