@@ -1,0 +1,20 @@
+Format: 1.8
+Date: Mon, 26 Apr 2021 12:25:47 +0300
+Source: EmiCal
+Binary: EmiCal
+Architecture: amd64
+Version: 1.0
+Distribution: development
+Urgency: low
+Maintainer: DP Software <>
+Changed-By: DP Software <>
+Description:
+ EmiCal - EmiCal
+Changes:
+ EmiCal (1.0) development; urgency=low
+Checksums-Sha1:
+ efe891df4c12eb34795a2bbd4cd664549fd6c055 37168980 EmiCal_1.0.deb
+Checksums-Sha256:
+ 27233acda1ea8a648090f70e09ce323ba21c3b7e1dbc6595964928719ba760d2 37168980 EmiCal_1.0.deb
+Files:
+ fdc9f3b75395db8a2e1ff106ef660306 37168980 misc optional EmiCal_1.0.deb
