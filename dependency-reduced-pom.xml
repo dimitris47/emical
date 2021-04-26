@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.dimitris47</groupId>
-  <artifactId>EmiCal</artifactId>
+  <artifactId>emical</artifactId>
   <version>1.0</version>
   <build>
     <plugins>
@@ -40,10 +40,10 @@
               <organizationName>DP Software</organizationName>
               <bundleJre>true</bundleJre>
               <linuxConfig>
-                <pngFile>target/assets/linux/EmiCal.png</pngFile>
+                <pngFile>target/assets/linux/emical.png</pngFile>
               </linuxConfig>
               <winConfig>
-                <icoFile>target/assets/linux/EmiCal.ico</icoFile>
+                <icoFile>target\assets\windows\emical.ico</icoFile>
               </winConfig>
               <generateInstaller>true</generateInstaller>
               <administratorRequired>false</administratorRequired>
