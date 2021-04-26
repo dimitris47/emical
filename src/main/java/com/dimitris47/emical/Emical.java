@@ -311,10 +311,6 @@ public class Emical extends Application {
 
         Scene scene = new Scene(box, defWidth, defHeight);
         stage.setScene(scene);
-        if (System.getProperty("os.name").contains("Win"))
-            stage.getIcons().add(new Image("EmiCal.ico"));
-        else if (System.getProperty("os.name").contains("Linux"))
-            stage.getIcons().add(new Image("EmiCal.png"));
         stage.setMinWidth(defWidth);
         stage.setMinHeight(defHeight);
         stage.setTitle("Emical");

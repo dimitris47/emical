@@ -39,6 +39,12 @@
               <mainClass>com.dimitris47.emical.Launcher</mainClass>
               <organizationName>DP Software</organizationName>
               <bundleJre>true</bundleJre>
+              <linuxConfig>
+                <pngFile>target/assets/linux/EmiCal.png</pngFile>
+              </linuxConfig>
+              <winConfig>
+                <icoFile>target/assets/linux/EmiCal.ico</icoFile>
+              </winConfig>
               <generateInstaller>true</generateInstaller>
               <administratorRequired>false</administratorRequired>
               <platform>auto</platform>

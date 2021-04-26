@@ -70,6 +70,14 @@
                             <!-- optional -->
                             <organizationName>DP Software</organizationName>
                             <bundleJre>true</bundleJre>
+<!--                            <iconFile>target/assets/windows/EmiCal.ico</iconFile>-->
+<!--                            <iconFile>target/assets/linux/EmiCal.png</iconFile>-->
+                            <linuxConfig>
+                                <pngFile>target/assets/linux/EmiCal.png</pngFile>
+                            </linuxConfig>
+                            <winConfig>
+                                <icoFile>target/assets/linux/EmiCal.ico</icoFile>
+                            </winConfig>
                             <generateInstaller>true</generateInstaller>
                             <administratorRequired>false</administratorRequired>
                             <platform>auto</platform>
