@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Emical
-Exec=java -jar '${PATH_TO_JARFILE_DIR}/EmiCal.jar'
-Comment=
-Terminal=false
-Icon=${PATH_TO_ICON_DIR}/cross.png
-Type=Application
-StartupWMClass=com.dimitris47.emical.Emical

@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -307,6 +308,7 @@ public class Emical extends Application {
         stage.setMinWidth(defWidth);
         stage.setMinHeight(defHeight);
         stage.setTitle("Emical");
+        stage.getIcons().add(new Image("emical.png"));
 
         getPrefs(stage);
         read();
