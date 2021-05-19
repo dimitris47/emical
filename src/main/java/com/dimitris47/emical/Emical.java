@@ -35,7 +35,7 @@ public class Emical extends Application {
 
     LocalDate selDate;
     int newEventDuration, newEventIntensity, daysPassed;
-    double meanDuration, meanIntensity;
+    double evPerMonthNum, meanDuration, meanIntensity;
 
     Label lblDuration, lblIntensity;
     Label place, symptoms, factors, medications;
@@ -472,11 +472,12 @@ public class Emical extends Application {
                 daysPassed = period.getYears() * 365 + period.getMonths() * 30 + period.getDays() + 1;
                 String calStarted = "\n(το ημερολόγιο ξεκίνησε στις " +
                         firstDate.getDayOfMonth() + "-" + firstDate.getMonthValue() + "-" + firstDate.getYear() + ")";
+                evPerMonthNum = lines.size() * 30.0 / daysPassed;
                 if (daysPassed < 30)
                     evPerMonth.setText("Συμβάντα έως σήμερα: " + lines.size() + calStarted);
                 else
                     evPerMonth.setText("Συμβάντα ανά 30 ημέρες: " +
-                            df.format(lines.size() * 30.0 / daysPassed) + calStarted);
+                            df.format(evPerMonthNum) + calStarted);
 
                 double totalDuration = 0;
                 double totalIntensities = 0;
@@ -554,7 +555,8 @@ public class Emical extends Application {
                 fatigue++;
         }
 
-        return "Μέσος όρος διάρκειας: " + df.format(meanDuration) + " ώρες\n" +
+        return "Συμβάντα ανά 30 ημέρες: " + df.format(evPerMonthNum) + "\n" +
+                "Μέσος όρος διάρκειας: " + df.format(meanDuration) + " ώρες\n" +
                 "Μέσος όρος έντασης: " + df.format(meanIntensity) + "\n" +
                 "Αριστερά: " + df.format(left / events * 100L) + "%\n" +
                 "Μπροστά: " + df.format(front / events * 100L) + "%\n" +
