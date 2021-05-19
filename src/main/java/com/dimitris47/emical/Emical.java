@@ -216,6 +216,8 @@ public class Emical extends Application {
         otherMed = new TextField();
         otherMed.setPromptText("διευκρινήστε");
         otherMed.setFont(defFont);
+        otherMed.setOnKeyTyped(e -> other.setSelected(!otherMed.getText().equals("")));
+
         HBox mediBox = new HBox();
         mediBox.setSpacing(12);
         mediBox.setAlignment(Pos.CENTER_LEFT);
@@ -334,6 +336,7 @@ public class Emical extends Application {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(exp, false))) {
             bw.write(textToExport);
             alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setResizable(true);
             alert.setTitle("Εξαγωγή αρχείου");
             alert.setHeaderText("Αποθήκευση αρχείου");
             alert.setContentText("Το αρχείο αποθηκεύτηκε με επιτυχία.");
@@ -343,6 +346,7 @@ public class Emical extends Application {
         catch (IOException e) {
             e.printStackTrace();
             alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setResizable(true);
             alert.setTitle("Εξαγωγή αρχείου");
             alert.setHeaderText("Αποτυχία δημιουργίας αρχείου");
             alert.setContentText("Δεν ήταν δυνατή η επιτυχής δημιουργία του αρχείου.");
@@ -364,6 +368,7 @@ public class Emical extends Application {
                 \u00A9 2021 Dimitris Psathas""";
 
         Alert infoDialog = new Alert(Alert.AlertType.INFORMATION);
+        infoDialog.setResizable(true);
         infoDialog.setTitle("Πληροφορίες προγράμματος");
         infoDialog.setHeaderText("Emical");
         infoDialog.setContentText(info);
@@ -497,6 +502,7 @@ public class Emical extends Application {
         File f = new File("migraineCalendar.txt");
         if (f.exists()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setResizable(true);
             alert.setTitle("Στατιστικά");
             alert.setHeaderText("Στατιστικά κεφαλαλγίας");
             alert.setContentText(createStats());
