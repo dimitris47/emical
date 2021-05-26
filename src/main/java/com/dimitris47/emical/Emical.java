@@ -9,7 +9,6 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -67,14 +66,14 @@ public class Emical extends Application {
         df = new DecimalFormat("#.#", dfSymbols);
         Rectangle2D screen = Screen.getPrimary().getBounds();
         if (screen.getWidth() >= 1920) {
-            fontSize = 15;
+            fontSize = 14;
             sizeFactor = 1.4;
         }
         else {
             fontSize = 11;
             sizeFactor = 1.2;
         }
-        defFont = Font.font("Segoe UI", FontWeight.NORMAL, fontSize);
+        defFont = new Font(fontSize);
         defWidth = 460 * sizeFactor;
         defHeight = 528 * sizeFactor;
         Insets ins = new Insets(0, 0, 0, 8 * sizeFactor);
