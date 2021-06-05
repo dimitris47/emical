@@ -408,7 +408,8 @@ public class Emical extends Application {
                 if (button.isSelected()) {
                     button.setText("Ενεργοποιημένη");
                     text.setEditable(true);
-                } else {
+                }
+                else {
                     button.setText("Απενεργοποιημένη");
                     text.setEditable(false);
                 }
@@ -475,8 +476,7 @@ public class Emical extends Application {
                 if (daysPassed < 30)
                     evPerMonth.setText("Συμβάντα έως σήμερα: " + lines.size() + calStarted);
                 else
-                    evPerMonth.setText("Συμβάντα ανά 30 ημέρες: " +
-                            df.format(evPerMonthNum) + calStarted);
+                    evPerMonth.setText("Συμβάντα ανά 30 ημέρες: " + df.format(evPerMonthNum) + calStarted);
 
                 double totalDuration = 0;
                 double totalIntensities = 0;
