@@ -327,7 +327,7 @@ public class Emical extends Application {
             while ((line = reader.readLine()) != null)
                 textToExtract.append(line.concat("\n"));
         }
-        String textToExport = "Ημερολόγιο:" + textToExtract + "\n" +
+        String textToExport = "Ημερολόγιο:" + textToExtract + '\n' +
                 "Στατιστικά:\n" + createStats();
 
         File exp = new File("migraineReport.txt");
@@ -554,22 +554,50 @@ public class Emical extends Application {
                 fatigue++;
         }
 
-        return "Συμβάντα ανά 30 ημέρες: " + df.format(evPerMonthNum) + "\n" +
-                "Μέσος όρος διάρκειας: " + df.format(meanDuration) + " ώρες\n" +
-                "Μέσος όρος έντασης: " + df.format(meanIntensity) + "\n" +
-                "Αριστερά: " + df.format(left / events * 100L) + "%\n" +
-                "Μπροστά: " + df.format(front / events * 100L) + "%\n" +
-                "Δεξιά: " + df.format(right / events * 100L) + "%\n" +
-                "Συνδυασμός: " + df.format(combination / events * 100L) + "%\n" +
-                "Αύρα: " + df.format(aura / events * 100L) + "%\n" +
-                "Φωτοφοβία: " + df.format(photo / events * 100L) + "%\n" +
-                "Ηχοφοβία: " + df.format(sound / events * 100L) + "%\n" +
-                "Ίλιγγος: " + df.format(vertigo / events * 100L) + "%\n" +
-                "Ναυτία/έμετος: " + df.format(nausea / events * 100L) + "%\n" +
-                "Αυχένας: " + df.format(neck / events * 100L) + "%\n" +
-                "Κακός ύπνος: " + df.format(sleep / events * 100L) + "%\n" +
-                "Άγχος/στρες: " + df.format(stress / events * 100L) + "%\n" +
-                "Κόπωση: " + df.format(fatigue / events * 100L) + "%\n";
+        String report = "Συμβάντα ανά 30 ημέρες: " + df.format(evPerMonthNum) + '\n';
+        if (meanDuration > 1) {
+            report += "Μέσος όρος διάρκειας: " + df.format(meanDuration) + " ώρες\n";
+        } else {
+            report += "Μέσος όρος διάρκειας: 1 ώρα\n";
+        }
+        report += "Μέσος όρος έντασης: " + df.format(meanIntensity) + '\n';
+
+        if (left > 0 || front > 0 || right > 0 || combination > 0)
+            report += "\nΕντοπισμός πόνου:\n";
+        if (left > 0)
+            report += "Αριστερά: " + df.format(left / events * 100L) + "%\n";
+        if (front > 0)
+            report += "Μπροστά: " + df.format(front / events * 100L) + "%\n";
+        if (right > 0)
+            report += "Δεξιά: " + df.format(right / events * 100L) + "%\n";
+        if (combination > 0)
+            report += "Συνδυασμός: " + df.format(combination / events * 100L) + "%\n";
+
+        if (aura > 0 || photo > 0 || sound > 0 || vertigo > 0 || nausea > 0)
+            report += "\nΕπιπλέον συμπτώματα:\n";
+        if (aura > 0)
+            report += "Αύρα: " + df.format(aura / events * 100L) + "%\n";
+        if (photo > 0)
+            report += "Φωτοφοβία: " + df.format(photo / events * 100L) + "%\n";
+        if (sound > 0)
+            report += "Ηχοφοβία: " + df.format(sound / events * 100L) + "%\n";
+        if (vertigo > 0)
+            report += "Ίλιγγος: " + df.format(vertigo / events * 100L) + "%\n";
+        if (nausea > 0)
+            report += "Ναυτία/έμετος: " + df.format(nausea / events * 100L) + "%\n";
+
+        if (neck > 0 || sleep > 0 || stress > 0 || fatigue > 0)
+            report += "\nΕπιβαρυντικοί παράγοντες:\n";
+        if (neck > 0)
+            report += "Αυχένας: " + df.format(neck / events * 100L) + "%\n";
+        if (sleep > 0)
+            report += "Κακός ύπνος: " + df.format(sleep / events * 100L) + "%\n";
+        if (stress > 0)
+            report += "Άγχος/στρες: " + df.format(stress / events * 100L) + "%\n";
+        if (fatigue > 0)
+            report += "Κόπωση: " + df.format(fatigue / events * 100L) + "%\n";
+
+        return report;
     }
 
     private void noCalendar(Stage stage) {
