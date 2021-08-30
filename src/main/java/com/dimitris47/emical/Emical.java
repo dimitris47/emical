@@ -9,6 +9,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -330,29 +331,36 @@ public class Emical extends Application {
                 textToExtract.append(line.concat("\n"));
         }
         String textToExport = "Ημερολόγιο:" + textToExtract + '\n' +
-                "Στατιστικά:\n" + createStats();
+                "\nΣτατιστικά:\n" + createStats();
 
-        File exp = new File("migraineReport.txt");
-        Alert alert;
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(exp, false))) {
-            bw.write(textToExport);
-            alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setResizable(true);
-            alert.setTitle("Εξαγωγή αρχείου");
-            alert.setHeaderText("Αποθήκευση αρχείου");
-            alert.setContentText("Το αρχείο αποθηκεύτηκε με επιτυχία.");
-            alert.initOwner(stage);
-            alert.showAndWait();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setResizable(true);
-            alert.setTitle("Εξαγωγή αρχείου");
-            alert.setHeaderText("Αποτυχία δημιουργίας αρχείου");
-            alert.setContentText("Δεν ήταν δυνατή η επιτυχής δημιουργία του αρχείου.");
-            alert.initOwner(stage);
-            alert.showAndWait();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Αποθήκευση αρχείου");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+                new FileChooser.ExtensionFilter("All Files", "*.*"));
+        File exp = fileChooser.showSaveDialog(stage);
+
+        if (exp != null) {
+            Alert alert;
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(exp, false))) {
+                bw.write(textToExport);
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setResizable(true);
+                alert.setTitle("Εξαγωγή αρχείου");
+                alert.setHeaderText("Αποθήκευση αρχείου");
+                alert.setContentText("Το αρχείο αποθηκεύτηκε με επιτυχία.");
+                alert.initOwner(stage);
+                alert.showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setResizable(true);
+                alert.setTitle("Εξαγωγή αρχείου");
+                alert.setHeaderText("Αποτυχία δημιουργίας αρχείου");
+                alert.setContentText("Δεν ήταν δυνατή η επιτυχής δημιουργία του αρχείου.");
+                alert.initOwner(stage);
+                alert.showAndWait();
+            }
         }
     }
 
