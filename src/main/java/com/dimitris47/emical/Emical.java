@@ -17,6 +17,9 @@ import javafx.util.StringConverter;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
@@ -321,10 +324,10 @@ public class Emical extends Application {
     }
 
     private void exportTxt(Stage stage) throws IOException {
-        File file = new File("migraineCalendar.txt");
+        File file = new File(getUserDataDirectory() + "migraineCalendar.txt");
         StringBuilder textToExtract = new StringBuilder();
         if (file.exists()) {
-            InputStream in = new FileInputStream("migraineCalendar.txt");
+            InputStream in = new FileInputStream(getUserDataDirectory() + "migraineCalendar.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
             String line;
             while ((line = reader.readLine()) != null)
@@ -402,9 +405,9 @@ public class Emical extends Application {
         text.setMinHeight(256);
         text.setFont(defFont);
 
-        File file = new File("migraineCalendar.txt");
+        File file = new File(getUserDataDirectory() + "migraineCalendar.txt");
         if (file.exists()) {
-            InputStream in = new FileInputStream("migraineCalendar.txt");
+            InputStream in = new FileInputStream(getUserDataDirectory() + "migraineCalendar.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
             String line;
             StringBuilder textToDisplay = new StringBuilder();
@@ -427,7 +430,7 @@ public class Emical extends Application {
             OK.setFont(defFont);
             OK.setOnAction(e -> {
                 try {
-                    File f = new File("migraineCalendar.txt");
+                    File f = new File(getUserDataDirectory() + "migraineCalendar.txt");
                     try (BufferedWriter bw = new BufferedWriter(new FileWriter(f, false))) {
                         bw.write(text.getText());
                     }
@@ -456,9 +459,9 @@ public class Emical extends Application {
     }
 
     private void read() throws IOException {
-        File f = new File("migraineCalendar.txt");
+        File f = new File(getUserDataDirectory() + "migraineCalendar.txt");
         if (f.exists()) {
-            InputStream in = new FileInputStream("migraineCalendar.txt");
+            InputStream in = new FileInputStream(getUserDataDirectory() + "migraineCalendar.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
             String line;
             ArrayList<String> lines = new ArrayList<>();
@@ -507,7 +510,7 @@ public class Emical extends Application {
     }
 
     private void getStats(Stage stage) throws IOException {
-        File f = new File("migraineCalendar.txt");
+        File f = new File(getUserDataDirectory() + "migraineCalendar.txt");
         if (f.exists()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setResizable(true);
@@ -516,9 +519,9 @@ public class Emical extends Application {
             alert.setContentText(createStats());
             alert.initOwner(stage);
             alert.showAndWait();
-        }
-        else
+        } else {
             noCalendar(stage);
+        }
     }
 
     private String createStats() throws IOException {
@@ -528,7 +531,7 @@ public class Emical extends Application {
         double neck = 0, sleep = 0, stress = 0, fatigue = 0;
         read();
 
-        InputStream in = new FileInputStream("migraineCalendar.txt");
+        InputStream in = new FileInputStream(getUserDataDirectory() + "migraineCalendar.txt");
         BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
         String line;
         while ((line = reader.readLine()) != null) {
@@ -671,9 +674,18 @@ public class Emical extends Application {
         }
     }
 
+    public static String getUserDataDirectory() {
+        return System.getProperty("user.home") + File.separator +
+                "DP Software" + File.separator + "EmiCal" + File.separator;
+    }
+
     private void doIO() throws IOException {
         if (update()) {
-            File f = new File("migraineCalendar.txt");
+            File f = new File(getUserDataDirectory() + "migraineCalendar.txt");
+            if (!f.exists()) {
+                Path path = Paths.get(getUserDataDirectory());
+                Files.createDirectories(path);
+            }
                 try (BufferedWriter bw = new BufferedWriter(new FileWriter(f, true))) {
                     bw.write("\nΣυμβάν: " + migev.toString());
                     if (isChecked("radio"))
