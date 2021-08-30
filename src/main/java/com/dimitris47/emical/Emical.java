@@ -335,9 +335,7 @@ public class Emical extends Application {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Αποθήκευση αρχείου");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
-                new FileChooser.ExtensionFilter("All Files", "*.*"));
+        fileChooser.setInitialFileName("migraine_report.txt");
         File exp = fileChooser.showSaveDialog(stage);
 
         if (exp != null) {
