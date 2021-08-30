@@ -68,8 +68,7 @@ public class Emical extends Application {
         if (screen.getWidth() >= 1920) {
             fontSize = 14;
             sizeFactor = 1.4;
-        }
-        else {
+        } else {
             fontSize = 11;
             sizeFactor = 1.2;
         }
@@ -86,17 +85,19 @@ public class Emical extends Application {
             { calendar.setPromptText(pattern.toLowerCase()); }
             @Override
             public String toString(LocalDate date) {
-                if (date != null)
+                if (date != null) {
                     return dateFormatter.format(date);
-                else
+                } else {
                     return "";
+                }
             }
             @Override
             public LocalDate fromString(String string) {
-                if (string != null && !string.isEmpty())
+                if (string != null && !string.isEmpty()) {
                     return LocalDate.parse(string, dateFormatter);
-                else
+                } else {
                     return null;
+                }
             }
         });
         calendar.setOnAction(e -> selDate = calendar.getValue());
@@ -120,10 +121,11 @@ public class Emical extends Application {
         });
         spinner.setOnScroll((ScrollEvent e) -> {
             int deltaY = (int) e.getDeltaY();
-            if (deltaY > 0)
+            if (deltaY > 0) {
                 spinner.getValueFactory().setValue(spinner.getValue() + 1);
-            else if (deltaY < 0)
+            } else if (deltaY < 0) {
                 spinner.getValueFactory().setValue(spinner.getValue() - 1);
+            }
         });
 
         lblIntensity = new Label("Ένταση");
@@ -684,9 +686,9 @@ public class Emical extends Application {
                         bw.write("\n-- " + notes.getText());
                 } catch (IOException e) { e.printStackTrace(); }
             read();
-        }
-        else
+        } else {
             System.err.println("Update unsuccessful, no IO done.");
+        }
     }
 
     private void setPrefs(Stage stage) {
