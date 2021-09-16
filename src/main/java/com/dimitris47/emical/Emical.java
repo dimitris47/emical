@@ -471,8 +471,7 @@ public class Emical extends Application {
 
             if (!lines.isEmpty()) {
                 String firstLine = lines.get(0);
-                String[] firstDateStr = firstLine.split(": ");
-                String[] firstDateSplStr = firstDateStr[1].split("-");
+                String[] firstDateSplStr = firstLine.split(": ")[1].split("-");
 
                 int firstYear = Integer.parseInt(firstDateSplStr[0]);
                 int firstMonth = Integer.parseInt(firstDateSplStr[1]);
@@ -484,10 +483,11 @@ public class Emical extends Application {
                 String calStarted = "\n(το ημερολόγιο ξεκίνησε στις " +
                         firstDate.getDayOfMonth() + "-" + firstDate.getMonthValue() + "-" + firstDate.getYear() + ")";
                 evPerMonthNum = lines.size() * 30.0 / daysPassed;
-                if (daysPassed < 30)
+                if (daysPassed < 30) {
                     evPerMonthLabel.setText("Συμβάντα έως σήμερα: " + lines.size() + calStarted);
-                else
+                } else {
                     evPerMonthLabel.setText("Συμβάντα ανά 30 ημέρες: " + df.format(evPerMonthNum) + calStarted);
+                }
 
                 double totalDuration = 0;
                 double totalIntensities = 0;
