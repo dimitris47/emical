@@ -7,7 +7,6 @@ public class MigraineEvent {
     int hours;
     int intensity;
     String units;
-//    boolean isMajor;
 
     public MigraineEvent(LocalDate date, int hours, int intensity) {
         this.date = date;
@@ -18,8 +17,6 @@ public class MigraineEvent {
         } else {
             units = " ώρες, ένταση: ";
         }
-//        if (this.hours >= 6 || this.intensity >= 7)
-//            this.isMajor = true;
     }
 
     @Override

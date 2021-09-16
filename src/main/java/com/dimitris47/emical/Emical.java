@@ -38,11 +38,11 @@ public class Emical extends Application {
 
     LocalDate selDate;
     int newEventDuration, newEventIntensity, daysPassed;
-    double evPerMonthNum, meanDuration, meanIntensity;
+    double evPerMonthNum, majorEvents, majorEvPerMonthNum, meanDuration, meanIntensity;
 
     Label durationLabel, intensityLabel,
             placeLabel, symptomsLabel, factorsLabel, medicationsLabel,
-            savedInfoLabel, evPerMonthLabel, durMeanLabel, intMeanLabel;
+            savedInfoLabel, evPerMonthLabel, majorEventsLabel, durMeanLabel, intMeanLabel;
 
     DatePicker calendar;
     Spinner<Integer> spinner;
@@ -277,11 +277,12 @@ public class Emical extends Application {
 
         evPerMonthLabel = new Label("Συμβάντα ανά 30 ημέρες: ");
         evPerMonthLabel.setMinHeight(32 * sizeFactor);
-        evPerMonthLabel.setFont(defFont);
+        majorEventsLabel = new Label("Σημαντικά συμβάντα ανά 30 ημέρες: ");
+        majorEventsLabel.setMinHeight(32 * sizeFactor);
         durMeanLabel = new Label("Μέσος όρος διάρκειας: ");
-        durMeanLabel.setFont(defFont);
         intMeanLabel = new Label("Μέσος όρος έντασης: ");
-        intMeanLabel.setFont(defFont);
+        for (var label : Arrays.asList(evPerMonthLabel, majorEventsLabel, durMeanLabel, intMeanLabel))
+            label.setFont(defFont);
         HBox means = new HBox();
         means.setSpacing(16);
         means.getChildren().addAll(durMeanLabel, intMeanLabel);
@@ -290,7 +291,7 @@ public class Emical extends Application {
         summary.setPadding(new Insets(4, 0, 0, 0));
         summary.setSpacing(4);
         summary.setFillWidth(true);
-        summary.getChildren().addAll(evPerMonthLabel, means);
+        summary.getChildren().addAll(evPerMonthLabel, majorEventsLabel, means);
 
         Separator sep4 = new Separator();
         sep4.setOrientation(Orientation.HORIZONTAL);
@@ -489,24 +490,29 @@ public class Emical extends Application {
                     evPerMonthLabel.setText("Συμβάντα ανά 30 ημέρες: " + df.format(evPerMonthNum) + calStarted);
                 }
 
-                double totalDuration = 0;
+                double totalDurations = 0;
                 double totalIntensities = 0;
 
                 for (var event : lines) {
                     String[] evtStr = event.split(": ");
                     String[] durStr = evtStr[2].split(" ώρ");
                     double dur = Double.parseDouble(durStr[0]);
-                    totalDuration += dur;
+                    totalDurations += dur;
                     double intns = Double.parseDouble(evtStr[3]);
                     totalIntensities += intns;
+                    if (dur >= 4 || intns >= 5)
+                        majorEvents++;
                 }
 
-                meanDuration = totalDuration / lines.size();
+                meanDuration = totalDurations / lines.size();
                 durMeanLabel.setText("Μέσος όρος διάρκειας: " + df.format(meanDuration) + " ώρες");
                 meanIntensity = totalIntensities / lines.size();
                 intMeanLabel.setText("Μέσος όρος έντασης: " + df.format(meanIntensity));
+                majorEvPerMonthNum = majorEvents / 30;
+                majorEventsLabel.setText("Σημαντικά συμβάντα ανά 30 ημέρες: " + df.format(majorEvPerMonthNum));
             }
         }
+        majorEvents = 0;
     }
 
     private void getStats(Stage stage) throws IOException {
@@ -566,6 +572,7 @@ public class Emical extends Application {
         }
 
         String report = "Συμβάντα ανά 30 ημέρες: " + df.format(evPerMonthNum) + '\n';
+        report += "Σημαντικά συμβάντα ανά 30 ημέρες: " + df.format(majorEvPerMonthNum) + '\n';
         if (meanDuration > 1) {
             report += "Μέσος όρος διάρκειας: " + df.format(meanDuration) + " ώρες\n";
         } else {
