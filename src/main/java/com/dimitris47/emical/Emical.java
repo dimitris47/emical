@@ -686,23 +686,23 @@ public class Emical extends Application {
                 Path path = Paths.get(getUserDataDirectory());
                 Files.createDirectories(path);
             }
-                try (BufferedWriter bw = new BufferedWriter(new FileWriter(f, true))) {
-                    bw.write("\nΣυμβάν: " + event.toString());
-                    if (isChecked("radio"))
-                        for (var radioText : radioTexts)
-                            bw.write("\n-- " + radioText);
-                    if (isChecked("symptom"))
-                        for (var symptomText : symptomTexts)
-                            bw.write("\n-- " + symptomText);
-                    if (isChecked("box"))
-                        for (var boxText : boxTexts)
-                            bw.write("\n-- " + boxText);
-                    if (isChecked("medi"))
-                        for (var mediText : mediTexts)
-                            bw.write("\n-- " + mediText);
-                    if (!notesArea.getText().isEmpty())
-                        bw.write("\n-- " + notesArea.getText());
-                } catch (IOException e) { e.printStackTrace(); }
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(f, true))) {
+                bw.write("\nΣυμβάν: " + event.toString());
+                if (isChecked("radio"))
+                    for (var radioText : radioTexts)
+                        bw.write("\n-- " + radioText);
+                if (isChecked("symptom"))
+                    for (var symptomText : symptomTexts)
+                        bw.write("\n-- " + symptomText);
+                if (isChecked("box"))
+                    for (var boxText : boxTexts)
+                        bw.write("\n-- " + boxText);
+                if (isChecked("medi"))
+                    for (var mediText : mediTexts)
+                        bw.write("\n-- " + mediText);
+                if (!notesArea.getText().isEmpty())
+                    bw.write("\n-- " + notesArea.getText());
+            } catch (IOException e) { e.printStackTrace(); }
             read();
         } else {
             System.err.println("Update unsuccessful, no IO done.");

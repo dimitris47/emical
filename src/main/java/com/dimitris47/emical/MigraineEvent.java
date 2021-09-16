@@ -12,10 +12,11 @@ public class MigraineEvent {
         this.date = date;
         this.hours = hours;
         this.intensity = intensity;
-        if (hours == 1)
+        if (hours == 1) {
             units = " ώρα, ένταση: ";
-        else
+        } else {
             units = " ώρες, ένταση: ";
+        }
     }
 
     @Override
