@@ -49,17 +49,17 @@ public class Emical extends Application {
     Slider intensitySlider;
     RadioButton radLeft, radCenter, radRight, radCombined;
     CheckBox aura, photophobia, soundSens, vertigo, nausea;
-    CheckBox neck, badSleep, stress, fatigue;
+    CheckBox neckProblems, badSleep, stress, fatigue;
     CheckBox depon, ponstan, algofren, imigran, other;
     TextField otherMed;
-    TextArea notes;
-    Button saveEvent, openJournal, stats, export, info;
+    TextArea notesArea;
+    Button saveEvent, openJournal, stats, export, infoBtn;
 
     ArrayList<RadioButton> radios;
     ArrayList<String> radioTexts, symptomTexts, boxTexts, mediTexts;
     ArrayList<CheckBox> symptomBoxes, factorBoxes, mediBoxes;
 
-    MigraineEvent migev;
+    MigraineEvent event;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -187,18 +187,18 @@ public class Emical extends Application {
         factors = new Label("Επιβαρυντικοί παράγοντες");
         factors.setFont(defFont);
         factorBoxes = new ArrayList<>();
-        neck = new CheckBox("αυχένας");
+        neckProblems = new CheckBox("αυχένας");
         badSleep = new CheckBox("κακός ύπνος");
         stress = new CheckBox("άγχος/στρες");
         fatigue = new CheckBox("κόπωση");
-        factorBoxes.addAll(Arrays.asList(neck, badSleep, stress, fatigue));
+        factorBoxes.addAll(Arrays.asList(neckProblems, badSleep, stress, fatigue));
         for (var box : factorBoxes) {
             box.setAllowIndeterminate(false);
             box.setFont(defFont);
         }
         HBox circumBox = new HBox();
         circumBox.setSpacing(12);
-        circumBox.getChildren().addAll(neck, badSleep, stress, fatigue);
+        circumBox.getChildren().addAll(neckProblems, badSleep, stress, fatigue);
 
         Separator sep2 = new Separator();
         sep2.setOrientation(Orientation.HORIZONTAL);
@@ -228,9 +228,9 @@ public class Emical extends Application {
         mediBox.setAlignment(Pos.CENTER_LEFT);
         mediBox.getChildren().addAll(depon, ponstan, algofren, imigran, other, otherMed);
 
-        notes = new TextArea();
-        notes.setFont(defFont);
-        notes.setPromptText("Γράψτε σημειώσεις εδώ");
+        notesArea = new TextArea();
+        notesArea.setFont(defFont);
+        notesArea.setPromptText("Γράψτε σημειώσεις εδώ");
 
         savedInfo = new Label();
         savedInfo.setFont(defFont);
@@ -296,19 +296,19 @@ public class Emical extends Application {
         sep4.setOrientation(Orientation.HORIZONTAL);
         sep4.setValignment(VPos.CENTER);
 
-        info = new Button("Πληροφορίες");
-        info.setFont(defFont);
-        info.setOnAction(e -> aboutClicked(stage));
+        infoBtn = new Button("Πληροφορίες");
+        infoBtn.setFont(defFont);
+        infoBtn.setOnAction(e -> aboutClicked(stage));
 
         HBox infoBox = new HBox();
-        infoBox.getChildren().add(info);
+        infoBox.getChildren().add(infoBtn);
         infoBox.setAlignment(Pos.CENTER_RIGHT);
 
         VBox box = new VBox();
         box.setPadding(new Insets(8));
         box.setSpacing(12);
         box.getChildren().addAll(details, place, radioBox, symptoms, symptomBox, sep1, factors, circumBox, sep2,
-                medications, mediBox, notes, buttons, savedInfo, sep3, summary, sep4, infoBox);
+                medications, mediBox, notesArea, buttons, savedInfo, sep3, summary, sep4, infoBox);
 
         Scene scene = new Scene(box, defWidth, defHeight);
         stage.setScene(scene);
@@ -665,8 +665,8 @@ public class Emical extends Application {
             newEventIntensity = Integer.parseInt(String.valueOf(Math.round(intensitySlider.getValue())));
             if (selDate == null)
                 selDate = LocalDate.now();
-            migev = new MigraineEvent(selDate, newEventDuration, newEventIntensity);
-            savedInfo.setText(migev.toFormattedString());
+            event = new MigraineEvent(selDate, newEventDuration, newEventIntensity);
+            savedInfo.setText(event.toFormattedString());
             return true;
         } catch (Exception exception) {
             savedInfo.setText("Δεν καταγράφηκε κάποιο γεγονός");
@@ -687,7 +687,7 @@ public class Emical extends Application {
                 Files.createDirectories(path);
             }
                 try (BufferedWriter bw = new BufferedWriter(new FileWriter(f, true))) {
-                    bw.write("\nΣυμβάν: " + migev.toString());
+                    bw.write("\nΣυμβάν: " + event.toString());
                     if (isChecked("radio"))
                         for (var radioText : radioTexts)
                             bw.write("\n-- " + radioText);
@@ -700,8 +700,8 @@ public class Emical extends Application {
                     if (isChecked("medi"))
                         for (var mediText : mediTexts)
                             bw.write("\n-- " + mediText);
-                    if (!notes.getText().isEmpty())
-                        bw.write("\n-- " + notes.getText());
+                    if (!notesArea.getText().isEmpty())
+                        bw.write("\n-- " + notesArea.getText());
                 } catch (IOException e) { e.printStackTrace(); }
             read();
         } else {
