@@ -500,7 +500,7 @@ public class Emical extends Application {
                     totalDurations += dur;
                     double intns = Double.parseDouble(evtStr[3]);
                     totalIntensities += intns;
-                    if (dur >= 3 || intns >= 5)
+                    if (dur >= 3 || intns >= 6)
                         majorEvents++;
                 }
 
