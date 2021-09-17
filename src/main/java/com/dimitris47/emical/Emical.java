@@ -278,7 +278,7 @@ public class Emical extends Application {
         evPerMonthLabel = new Label("Συμβάντα ανά 30 ημέρες: ");
         evPerMonthLabel.setMinHeight(32 * sizeFactor);
         majorEventsLabel = new Label("Σημαντικά συμβάντα ανά 30 ημέρες: ");
-        majorEventsLabel.setMinHeight(32 * sizeFactor);
+        majorEventsLabel.setMinHeight(24 * sizeFactor);
         durMeanLabel = new Label("Μέσος όρος διάρκειας: ");
         intMeanLabel = new Label("Μέσος όρος έντασης: ");
         for (var label : Arrays.asList(evPerMonthLabel, majorEventsLabel, durMeanLabel, intMeanLabel))
@@ -508,7 +508,7 @@ public class Emical extends Application {
                 durMeanLabel.setText("Μέσος όρος διάρκειας: " + df.format(meanDuration) + " ώρες");
                 meanIntensity = totalIntensities / lines.size();
                 intMeanLabel.setText("Μέσος όρος έντασης: " + df.format(meanIntensity));
-                majorEvPerMonthNum = majorEvents / 30;
+                majorEvPerMonthNum = majorEvents * 30.0 / daysPassed;
                 majorEventsLabel.setText("Σημαντικά συμβάντα ανά 30 ημέρες: " + df.format(majorEvPerMonthNum));
             }
         }
