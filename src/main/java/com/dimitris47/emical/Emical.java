@@ -44,7 +44,9 @@ public class Emical extends Application {
 
     Label durationLabel, intensityLabel,
             placeLabel, symptomsLabel, factorsLabel, medicationsLabel,
-            savedInfoLabel, evPerMonthLabel, majorEventsLabel, durMeanLabel, intMeanLabel;
+            savedInfoLabel, evPerMonthLabel, durMeanLabel, intMeanLabel;
+
+//    Label majorEventsLabel;
 
     DatePicker calendar;
     Spinner<Integer> spinner;
@@ -279,11 +281,11 @@ public class Emical extends Application {
 
         evPerMonthLabel = new Label("Συμβάντα ανά 30 ημέρες: ");
         evPerMonthLabel.setMinHeight(32 * sizeFactor);
-        majorEventsLabel = new Label("Σημαντικά συμβάντα ανά 30 ημέρες: ");
-        majorEventsLabel.setMinHeight(24 * sizeFactor);
+//        majorEventsLabel = new Label("Σημαντικά συμβάντα ανά 30 ημέρες: ");
+//        majorEventsLabel.setMinHeight(24 * sizeFactor);
         durMeanLabel = new Label("Μέσος όρος διάρκειας: ");
         intMeanLabel = new Label("Μέσος όρος έντασης: ");
-        for (var label : Arrays.asList(evPerMonthLabel, majorEventsLabel, durMeanLabel, intMeanLabel))
+        for (var label : Arrays.asList(evPerMonthLabel, durMeanLabel, intMeanLabel))
             label.setFont(defFont);
         HBox means = new HBox();
         means.setSpacing(16);
@@ -293,7 +295,7 @@ public class Emical extends Application {
         summary.setPadding(new Insets(4, 0, 0, 0));
         summary.setSpacing(4);
         summary.setFillWidth(true);
-        summary.getChildren().addAll(evPerMonthLabel, majorEventsLabel, means);
+        summary.getChildren().addAll(evPerMonthLabel, means);
 
         Separator sep4 = new Separator();
         sep4.setOrientation(Orientation.HORIZONTAL);
