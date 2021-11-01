@@ -38,7 +38,9 @@ public class Emical extends Application {
 
     LocalDate selDate;
     int newEventDuration, newEventIntensity, daysPassed;
-    double evPerMonthNum, majorEvents, majorEvPerMonthNum, meanDuration, meanIntensity;
+    double evPerMonthNum, meanDuration, meanIntensity;
+
+//    double majorEvents, majorEvPerMonthNum;
 
     Label durationLabel, intensityLabel,
             placeLabel, symptomsLabel, factorsLabel, medicationsLabel,
@@ -308,8 +310,9 @@ public class Emical extends Application {
         VBox box = new VBox();
         box.setPadding(new Insets(8));
         box.setSpacing(12);
-        box.getChildren().addAll(details, placeLabel, radioBox, symptomsLabel, symptomBox, sep1, factorsLabel, circumBox, sep2,
-                medicationsLabel, mediBox, notesArea, buttons, savedInfoLabel, sep3, summary, sep4, infoBox);
+        box.getChildren().addAll(details, placeLabel, radioBox, symptomsLabel, symptomBox, sep1,
+                factorsLabel, circumBox, sep2, medicationsLabel, mediBox, notesArea, buttons, savedInfoLabel, sep3,
+                summary, sep4, infoBox);
 
         Scene scene = new Scene(box, defWidth, defHeight);
         stage.setScene(scene);
@@ -493,26 +496,51 @@ public class Emical extends Application {
                 double totalDurations = 0;
                 double totalIntensities = 0;
 
+                int lastMonthEvents = 0;
+                double lastMonthDurations = 0;
+                double lastMonthIntensities = 0;
+
                 for (var event : lines) {
+                    String[] dateSplStr = event.split(": ")[1].split("-");
+                    int evtYear = Integer.parseInt(dateSplStr[0]);
+                    int evtMonth = Integer.parseInt(dateSplStr[1]);
+                    int evtDay = Integer.parseInt(dateSplStr[2]);
+                    LocalDate evtDate = LocalDate.of(evtYear, evtMonth, evtDay);
+
                     String[] evtStr = event.split(": ");
                     String[] durStr = evtStr[2].split(" ώρ");
                     double dur = Double.parseDouble(durStr[0]);
                     totalDurations += dur;
                     double intns = Double.parseDouble(evtStr[3]);
                     totalIntensities += intns;
-                    if (dur >= 4 || intns >= 5)
-                        majorEvents++;
+//                    if (dur >= 4 || intns >= 5)
+//                        majorEvents++;
+
+                    Period lastMonth = Period.between(evtDate, LocalDate.now());
+                    if (lastMonth.getMonths() < 1) {
+                        lastMonthEvents++;
+                        lastMonthDurations += dur;
+                        lastMonthIntensities += intns;
+                    }
                 }
+
+                double meanLastMonthDuration = lastMonthDurations / lastMonthEvents;
+                double meanLastMonthIntensity = lastMonthIntensities / lastMonthEvents;
+
+                // PUT ON LABEL (& STATISTICS)
+                System.out.println(lastMonthEvents + " "
+                        + df.format(meanLastMonthDuration) + " "
+                        + df.format(meanLastMonthIntensity));
 
                 meanDuration = totalDurations / lines.size();
                 durMeanLabel.setText("Μέσος όρος διάρκειας: " + df.format(meanDuration) + " ώρες");
                 meanIntensity = totalIntensities / lines.size();
                 intMeanLabel.setText("Μέσος όρος έντασης: " + df.format(meanIntensity));
-                majorEvPerMonthNum = majorEvents * 30.0 / daysPassed;
-                majorEventsLabel.setText("Σημαντικά συμβάντα ανά 30 ημέρες: " + df.format(majorEvPerMonthNum));
+//                majorEvPerMonthNum = majorEvents * 30.0 / daysPassed;
+//                majorEventsLabel.setText("Σημαντικά συμβάντα ανά 30 ημέρες: " + df.format(majorEvPerMonthNum));
             }
         }
-        majorEvents = 0;
+//        majorEvents = 0;
     }
 
     private void getStats(Stage stage) throws IOException {
@@ -572,7 +600,7 @@ public class Emical extends Application {
         }
 
         String report = "Συμβάντα ανά 30 ημέρες: " + df.format(evPerMonthNum) + '\n';
-        report += "Σημαντικά συμβάντα ανά 30 ημέρες: " + df.format(majorEvPerMonthNum) + '\n';
+//        report += "Σημαντικά συμβάντα ανά 30 ημέρες: " + df.format(majorEvPerMonthNum) + '\n';
         if (meanDuration > 1) {
             report += "Μέσος όρος διάρκειας: " + df.format(meanDuration) + " ώρες\n";
         } else {
