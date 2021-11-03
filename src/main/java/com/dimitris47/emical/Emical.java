@@ -44,7 +44,7 @@ public class Emical extends Application {
 
     Label durationLabel, intensityLabel,
             placeLabel, symptomsLabel, factorsLabel, medicationsLabel,
-            savedInfoLabel, evPerMonthLabel, durMeanLabel, intMeanLabel;
+            savedInfoLabel, evPerMonthLabel, lastMonthEventsLabel, durMeanLabel, intMeanLabel;
 
 //    Label majorEventsLabel;
 
@@ -283,13 +283,14 @@ public class Emical extends Application {
         evPerMonthLabel.setMinHeight(32 * sizeFactor);
 //        majorEventsLabel = new Label("Σημαντικά συμβάντα ανά 30 ημέρες: ");
 //        majorEventsLabel.setMinHeight(24 * sizeFactor);
+        lastMonthEventsLabel = new Label("Γεγονότα τον τελευταίο μήνα: ");
         durMeanLabel = new Label("Μέσος όρος διάρκειας: ");
         intMeanLabel = new Label("Μέσος όρος έντασης: ");
         for (var label : Arrays.asList(evPerMonthLabel, durMeanLabel, intMeanLabel))
             label.setFont(defFont);
         HBox means = new HBox();
         means.setSpacing(16);
-        means.getChildren().addAll(durMeanLabel, intMeanLabel);
+        means.getChildren().addAll(durMeanLabel, intMeanLabel, lastMonthEventsLabel);
 
         VBox summary = new VBox();
         summary.setPadding(new Insets(4, 0, 0, 0));
@@ -529,17 +530,16 @@ public class Emical extends Application {
                 double meanLastMonthDuration = lastMonthDurations / lastMonthEvents;
                 double meanLastMonthIntensity = lastMonthIntensities / lastMonthEvents;
 
-                // PUT ON LABEL (& STATISTICS)
-                System.out.println(lastMonthEvents + " "
-                        + df.format(meanLastMonthDuration) + " "
-                        + df.format(meanLastMonthIntensity));
-
                 meanDuration = totalDurations / lines.size();
                 durMeanLabel.setText("Μέσος όρος διάρκειας: " + df.format(meanDuration) + " ώρες");
                 meanIntensity = totalIntensities / lines.size();
                 intMeanLabel.setText("Μέσος όρος έντασης: " + df.format(meanIntensity));
 //                majorEvPerMonthNum = majorEvents * 30.0 / daysPassed;
 //                majorEventsLabel.setText("Σημαντικά συμβάντα ανά 30 ημέρες: " + df.format(majorEvPerMonthNum));
+
+                lastMonthEventsLabel.setText("Συμβάντα τον τελευταίο μήνα: " + lastMonthEvents
+                        + "\nΜέσος όρος διάρκειας τον τελευταίο μήνα: " + meanLastMonthDuration
+                        + "\nΜέσος όρος έντασης τον τελευταίο μήνα: " + meanLastMonthIntensity);
             }
         }
 //        majorEvents = 0;
