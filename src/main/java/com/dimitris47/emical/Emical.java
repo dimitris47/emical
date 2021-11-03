@@ -39,6 +39,8 @@ public class Emical extends Application {
     LocalDate selDate;
     int newEventDuration, newEventIntensity, daysPassed;
     double evPerMonthNum, meanDuration, meanIntensity;
+    int lastMonthEvents;
+    double lastMonthDurations, lastMonthIntensities, meanLastMonthDuration, meanLastMonthIntensity;
 
 //    double majorEvents, majorEvPerMonthNum;
 
@@ -284,19 +286,20 @@ public class Emical extends Application {
 //        majorEventsLabel = new Label("Σημαντικά συμβάντα ανά 30 ημέρες: ");
 //        majorEventsLabel.setMinHeight(24 * sizeFactor);
         lastMonthEventsLabel = new Label("Γεγονότα τον τελευταίο μήνα: ");
+        lastMonthEventsLabel.setMinHeight(48 * sizeFactor);
         durMeanLabel = new Label("Μέσος όρος διάρκειας: ");
         intMeanLabel = new Label("Μέσος όρος έντασης: ");
-        for (var label : Arrays.asList(evPerMonthLabel, durMeanLabel, intMeanLabel))
+        for (var label : Arrays.asList(evPerMonthLabel, durMeanLabel, intMeanLabel, lastMonthEventsLabel))
             label.setFont(defFont);
         HBox means = new HBox();
         means.setSpacing(16);
-        means.getChildren().addAll(durMeanLabel, intMeanLabel, lastMonthEventsLabel);
+        means.getChildren().addAll(durMeanLabel, intMeanLabel);
 
         VBox summary = new VBox();
         summary.setPadding(new Insets(4, 0, 0, 0));
         summary.setSpacing(4);
         summary.setFillWidth(true);
-        summary.getChildren().addAll(evPerMonthLabel, means);
+        summary.getChildren().addAll(evPerMonthLabel, means, lastMonthEventsLabel);
 
         Separator sep4 = new Separator();
         sep4.setOrientation(Orientation.HORIZONTAL);
@@ -499,9 +502,9 @@ public class Emical extends Application {
                 double totalDurations = 0;
                 double totalIntensities = 0;
 
-                int lastMonthEvents = 0;
-                double lastMonthDurations = 0;
-                double lastMonthIntensities = 0;
+                lastMonthEvents = 0;
+                lastMonthDurations = 0;
+                lastMonthIntensities = 0;
 
                 for (var event : lines) {
                     String[] dateSplStr = event.split(": ")[1].split("-");
@@ -527,8 +530,8 @@ public class Emical extends Application {
                     }
                 }
 
-                double meanLastMonthDuration = lastMonthDurations / lastMonthEvents;
-                double meanLastMonthIntensity = lastMonthIntensities / lastMonthEvents;
+                meanLastMonthDuration = lastMonthDurations / lastMonthEvents;
+                meanLastMonthIntensity = lastMonthIntensities / lastMonthEvents;
 
                 meanDuration = totalDurations / lines.size();
                 durMeanLabel.setText("Μέσος όρος διάρκειας: " + df.format(meanDuration) + " ώρες");
@@ -538,8 +541,8 @@ public class Emical extends Application {
 //                majorEventsLabel.setText("Σημαντικά συμβάντα ανά 30 ημέρες: " + df.format(majorEvPerMonthNum));
 
                 lastMonthEventsLabel.setText("Συμβάντα τον τελευταίο μήνα: " + lastMonthEvents
-                        + "\nΜέσος όρος διάρκειας τον τελευταίο μήνα: " + meanLastMonthDuration
-                        + "\nΜέσος όρος έντασης τον τελευταίο μήνα: " + meanLastMonthIntensity);
+                        + "\nΜέσος όρος διάρκειας τον τελευταίο μήνα: " + df.format(meanLastMonthDuration)
+                        + "\nΜέσος όρος έντασης τον τελευταίο μήνα: " + df.format(meanLastMonthIntensity));
             }
         }
 //        majorEvents = 0;
@@ -644,6 +647,10 @@ public class Emical extends Application {
             report += "Άγχος/στρες: " + df.format(stress / events * 100L) + "%\n";
         if (fatigue > 0)
             report += "Κόπωση: " + df.format(fatigue / events * 100L) + "%\n";
+
+        report += "\nΣυμβάντα τον τελευταίο μήνα: " + lastMonthEvents
+                  + "\nΜέσος όρος διάρκειας τον τελευταίο μήνα: " + df.format(meanLastMonthDuration)
+                  + "\nΜέσος όρος έντασης τον τελευταίο μήνα: " + df.format(meanLastMonthIntensity);
 
         return report;
     }
