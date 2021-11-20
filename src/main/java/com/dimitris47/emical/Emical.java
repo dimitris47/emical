@@ -56,7 +56,7 @@ public class Emical extends Application {
     RadioButton radLeft, radCenter, radRight, radCombined;
     CheckBox aura, photophobia, soundSens, vertigo, nausea,
             neckProblems, badSleep, stress, fatigue,
-            depon, ponstan, algofren, imigran, other;
+            depon, ponstan, imigran, rizatriptan, other;
     TextField otherMed;
     TextArea notesArea;
     Button saveEvent, openJournal, stats, export, infoBtn;
@@ -83,8 +83,8 @@ public class Emical extends Application {
             sizeFactor = 1.2;
         }
         defFont = new Font(fontSize);
-        defWidth = 448 * sizeFactor;
-        defHeight = 528 * sizeFactor;
+        defWidth = 460 * sizeFactor;
+        defHeight = 560 * sizeFactor;
         Insets ins = new Insets(0, 0, 0, 8 * sizeFactor);
 
         calendar = new DatePicker();
@@ -215,9 +215,9 @@ public class Emical extends Application {
         mediBoxes = new ArrayList<>();
         depon = new CheckBox("Depon");
         ponstan = new CheckBox("Ponstan");
-        algofren = new CheckBox("Algofren");
         imigran = new CheckBox("Imigran");
-        mediBoxes.addAll(Arrays.asList(depon, ponstan, algofren, imigran));
+        rizatriptan = new CheckBox("Rizatriptan");
+        mediBoxes.addAll(Arrays.asList(depon, ponstan, imigran, rizatriptan));
         other = new CheckBox("Άλλο");
         other.setFont(defFont);
         for (var box : mediBoxes) {
@@ -232,7 +232,7 @@ public class Emical extends Application {
         HBox mediBox = new HBox();
         mediBox.setSpacing(12);
         mediBox.setAlignment(Pos.CENTER_LEFT);
-        mediBox.getChildren().addAll(depon, ponstan, algofren, imigran, other, otherMed);
+        mediBox.getChildren().addAll(depon, ponstan, imigran, rizatriptan, other, otherMed);
 
         notesArea = new TextArea();
         notesArea.setFont(defFont);
@@ -604,7 +604,13 @@ public class Emical extends Application {
                 fatigue++;
         }
 
-        String report = "Συμβάντα ανά 30 ημέρες: " + df.format(evPerMonthNum) + '\n';
+        String report;
+
+        if (daysPassed < 30) {
+            report = "Συμβάντα έως σήμερα: " + (int) events + '\n';
+        } else {
+            report = "Συμβάντα ανά 30 ημέρες: " + df.format(evPerMonthNum) + '\n';
+        }
 //        report += "Σημαντικά συμβάντα ανά 30 ημέρες: " + df.format(majorEvPerMonthNum) + '\n';
         if (meanDuration > 1) {
             report += "Μέσος όρος διάρκειας: " + df.format(meanDuration) + " ώρες\n";
@@ -648,9 +654,13 @@ public class Emical extends Application {
         if (fatigue > 0)
             report += "Κόπωση: " + df.format(fatigue / events * 100L) + "%\n";
 
-        report += "\nΣυμβάντα τον τελευταίο μήνα: " + lastMonthEvents
-                  + "\nΜέσος όρος διάρκειας τον τελευταίο μήνα: " + df.format(meanLastMonthDuration)
-                  + "\nΜέσος όρος έντασης τον τελευταίο μήνα: " + df.format(meanLastMonthIntensity);
+        report += "\nΣυμβάντα τον τελευταίο μήνα: " + lastMonthEvents;
+        if (meanDuration > 1) {
+            report += "\nΜέσος όρος διάρκειας τον τελευταίο μήνα: " + df.format(meanLastMonthDuration) + " ώρες";
+        } else {
+            report += "\nΜέσος όρος διάρκειας τον τελευταίο μήνα: 1 ώρα";
+        }
+        report += "\nΜέσος όρος έντασης τον τελευταίο μήνα: " + df.format(meanLastMonthIntensity);
 
         return report;
     }
