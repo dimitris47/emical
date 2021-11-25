@@ -730,7 +730,7 @@ public class Emical extends Application {
 
     public static String getUserDataDirectory() {
         return System.getProperty("user.home") + File.separator +
-                "DP Software" + File.separator + "EmiCal" + File.separator;
+                ".dp_software" + File.separator + "EmiCal" + File.separator;
     }
 
     private void doIO() throws IOException {
