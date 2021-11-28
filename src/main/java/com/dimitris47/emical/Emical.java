@@ -83,8 +83,8 @@ public class Emical extends Application {
             sizeFactor = 1.2;
         }
         defFont = new Font(fontSize);
-        defWidth = 460 * sizeFactor;
-        defHeight = 560 * sizeFactor;
+        defWidth = 448 * sizeFactor;
+        defHeight = 512 * sizeFactor;
         Insets ins = new Insets(0, 0, 0, 8 * sizeFactor);
 
         calendar = new DatePicker();
