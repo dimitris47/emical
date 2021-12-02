@@ -399,6 +399,7 @@ public class Emical extends Application {
     private void readJournal(Stage stage) throws IOException {
         Dialog<String> journal = new Dialog<>();
         journal.setTitle("Ημερολόγιο κεφαλαλγίας");
+        journal.setResizable(true);
 
         Label label = new Label("Επεξεργασία ημερολογίου");
         label.setFont(defFont);
