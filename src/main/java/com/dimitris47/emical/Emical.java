@@ -69,15 +69,15 @@ public class Emical extends Application {
         df = new DecimalFormat("#.#", dfSymbols);
         Rectangle2D screen = Screen.getPrimary().getBounds();
         if (screen.getWidth() >= 1920) {
-            fontSize = 14;
+            fontSize = 15;
             sizeFactor = 1.4;
         } else {
             fontSize = 11;
             sizeFactor = 1.2;
         }
-        defFont = new Font(fontSize);
-        defWidth = 448 * sizeFactor;
-        defHeight = 512 * sizeFactor;
+        defFont = Font.font("Segoe UI", fontSize);
+        defWidth = 480 * sizeFactor;
+        defHeight = 524 * sizeFactor;
         Insets ins = new Insets(0, 0, 0, 8 * sizeFactor);
 
         calendar = new DatePicker();
