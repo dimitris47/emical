@@ -25,9 +25,7 @@ import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Locale;
+import java.util.*;
 import java.util.prefs.Preferences;
 
 public class Emical extends Application {
@@ -239,23 +237,31 @@ public class Emical extends Application {
         saveEvent = new Button("Αποθήκευση συμβάντος");
         saveEvent.setFont(defFont);
         saveEvent.setOnAction(e -> {
-            update(stage);
-            try { doIO(stage); }
-            catch (IOException ioException) { ioException.printStackTrace(); }
+            try {
+                doIO(stage);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         });
 
         openJournal = new Button("Άνοιγμα ημερολογίου");
         openJournal.setFont(defFont);
         openJournal.setOnAction(e -> {
-            try { readJournal(stage); }
-            catch (IOException ioException) { ioException.printStackTrace(); }
+            try {
+                readJournal(stage);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         });
 
         stats = new Button("Στατιστικά");
         stats.setFont(defFont);
         stats.setOnAction(e -> {
-            try { getStats(stage); }
-            catch (IOException ioException) { ioException.printStackTrace(); }
+            try {
+                getStats(stage);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         });
 
         export = new Button("Εξαγωγή σε αρχείο");
@@ -322,8 +328,46 @@ public class Emical extends Application {
 
         getPrefs(stage);
         read();
-        stage.setOnCloseRequest(e -> setPrefs(stage));
+        stage.setOnCloseRequest(e -> {
+            if (checkSelected()) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.initOwner(stage);
+                alert.setTitle("Μη αποθηκευμένο συμβάν");
+                alert.setHeaderText("Υπάρχει μη αποθηκευμένο συμβάν.");
+                alert.setContentText("θέλετε να κλείσετε το πρόγραμμα χωρίς αποθήκευση του συμβάντος;");
+
+                ButtonType no = new ButtonType("Όχι, επιστροφή");
+                ButtonType yes = new ButtonType("Ναι, κλείσιμο");
+                alert.getButtonTypes().setAll(no, yes);
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.orElseThrow() == no)
+                    e.consume();
+            }
+            setPrefs(stage);
+        });
         stage.show();
+    }
+
+    private boolean checkSelected() {
+        if (!Objects.equals(calendar.getValue(), LocalDate.now()) ||
+                spinner.getValue() > 1 ||
+                intensitySlider.getValue() > 1 ||
+                !notesArea.getText().isEmpty())
+            return true;
+        for (var btn : radios)
+            if (btn.isSelected())
+                return true;
+        for (var box : symptomBoxes)
+            if (box.isSelected())
+                return true;
+        for (var box : factorBoxes)
+            if (box.isSelected())
+                return true;
+        for (var box : mediBoxes)
+            if (box.isSelected())
+                return true;
+        return false;
     }
 
     private void exportTxt(Stage stage) throws IOException {
@@ -535,7 +579,6 @@ public class Emical extends Application {
                         + "\nΜέσος όρος έντασης τον τελευταίο μήνα: " + df.format(meanLastMonthIntensity));
             }
         }
-//        majorEvents = 0;
     }
 
     private void getStats(Stage stage) throws IOException {
@@ -710,22 +753,6 @@ public class Emical extends Application {
                 selDate = LocalDate.now();
             event = new MigraineEvent(selDate, newEventDuration, newEventIntensity);
             savedInfoLabel.setText(event.toFormattedString());
-            calendar.setValue(LocalDate.now());
-            spinner.getValueFactory().setValue(1);
-            intensitySlider.setValue(1);
-            for (var btn : radios)
-                if (btn.isSelected())
-                    btn.setSelected(false);
-            for (var box : symptomBoxes)
-                if (box.isSelected())
-                    box.setSelected(false);
-            for (var box : factorBoxes)
-                if (box.isSelected())
-                    box.setSelected(false);
-            for (var box : mediBoxes)
-                if (box.isSelected())
-                    box.setSelected(false);
-            notesArea.clear();
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setResizable(true);
             alert.setTitle("Νέο συμβάν");
@@ -733,9 +760,12 @@ public class Emical extends Application {
             alert.setContentText("Το συμβάν αποθηκεύτηκε με επιτυχία.");
             alert.initOwner(stage);
             alert.showAndWait();
+            calendar.setValue(LocalDate.now());
+            spinner.getValueFactory().setValue(1);
+            intensitySlider.setValue(1);
             return true;
         } catch (Exception exception) {
-            savedInfoLabel.setText("Δεν καταγράφηκε κάποιο γεγονός");
+            savedInfoLabel.setText("Δεν καταγράφηκε κάποιο συμβάν");
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setResizable(true);
             alert.setTitle("Νέο συμβάν");
@@ -777,6 +807,19 @@ public class Emical extends Application {
                     bw.write("\n-- " + notesArea.getText());
             } catch (IOException e) { e.printStackTrace(); }
             read();
+            for (var btn : radios)
+                if (btn.isSelected())
+                    btn.setSelected(false);
+            for (var box : symptomBoxes)
+                if (box.isSelected())
+                    box.setSelected(false);
+            for (var box : factorBoxes)
+                if (box.isSelected())
+                    box.setSelected(false);
+            for (var box : mediBoxes)
+                if (box.isSelected())
+                    box.setSelected(false);
+            notesArea.clear();
         } else {
             System.err.println("Update unsuccessful, no IO done.");
         }
