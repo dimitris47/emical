@@ -239,8 +239,8 @@ public class Emical extends Application {
         saveEvent = new Button("Αποθήκευση συμβάντος");
         saveEvent.setFont(defFont);
         saveEvent.setOnAction(e -> {
-            update();
-            try { doIO(); }
+            update(stage);
+            try { doIO(stage); }
             catch (IOException ioException) { ioException.printStackTrace(); }
         });
 
@@ -702,7 +702,7 @@ public class Emical extends Application {
         return false;
     }
 
-    private boolean update() {
+    private boolean update(Stage stage) {
         try {
             newEventDuration = Integer.parseInt(String.valueOf(spinner.getValue()));
             newEventIntensity = Integer.parseInt(String.valueOf(Math.round(intensitySlider.getValue())));
@@ -710,9 +710,39 @@ public class Emical extends Application {
                 selDate = LocalDate.now();
             event = new MigraineEvent(selDate, newEventDuration, newEventIntensity);
             savedInfoLabel.setText(event.toFormattedString());
+            calendar.setValue(LocalDate.now());
+            spinner.getValueFactory().setValue(1);
+            intensitySlider.setValue(1);
+            for (var btn : radios)
+                if (btn.isSelected())
+                    btn.setSelected(false);
+            for (var box : symptomBoxes)
+                if (box.isSelected())
+                    box.setSelected(false);
+            for (var box : factorBoxes)
+                if (box.isSelected())
+                    box.setSelected(false);
+            for (var box : mediBoxes)
+                if (box.isSelected())
+                    box.setSelected(false);
+            notesArea.clear();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setResizable(true);
+            alert.setTitle("Νέο συμβάν");
+            alert.setHeaderText("Αποθήκευση συμβάντος");
+            alert.setContentText("Το συμβάν αποθηκεύτηκε με επιτυχία.");
+            alert.initOwner(stage);
+            alert.showAndWait();
             return true;
         } catch (Exception exception) {
             savedInfoLabel.setText("Δεν καταγράφηκε κάποιο γεγονός");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setResizable(true);
+            alert.setTitle("Νέο συμβάν");
+            alert.setHeaderText("Αποτυχία αποθήκευσης");
+            alert.setContentText("Δεν αποθηκεύτηκε κάποιο συμβάν.");
+            alert.initOwner(stage);
+            alert.showAndWait();
             return false;
         }
     }
@@ -722,8 +752,8 @@ public class Emical extends Application {
                 ".dp_software" + File.separator + "EmiCal" + File.separator;
     }
 
-    private void doIO() throws IOException {
-        if (update()) {
+    private void doIO(Stage stage) throws IOException {
+        if (update(stage)) {
             File f = new File(getUserDataDirectory() + "migraineCalendar.txt");
             if (!f.exists()) {
                 Path path = Paths.get(getUserDataDirectory());
