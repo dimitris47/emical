@@ -270,8 +270,11 @@ public class Emical extends Application {
         tip.setFont(defFont);
         export.setTooltip(tip);
         export.setOnAction(e -> {
-            try { exportTxt(stage); }
-            catch (IOException ioException) { ioException.printStackTrace(); }
+            try {
+                exportTxt(stage);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         });
 
         HBox buttons = new HBox();
@@ -467,8 +470,7 @@ public class Emical extends Application {
                 if (button.isSelected()) {
                     button.setText("Ενεργοποιημένη");
                     text.setEditable(true);
-                }
-                else {
+                } else {
                     button.setText("Απενεργοποιημένη");
                     text.setEditable(false);
                 }
@@ -501,9 +503,9 @@ public class Emical extends Application {
             journal.initModality(Modality.APPLICATION_MODAL);
             journal.initOwner(stage);
             journal.show();
-        }
-        else
+        } else {
             noCalendar(stage);
+        }
     }
 
     private void read() throws IOException {
@@ -805,7 +807,9 @@ public class Emical extends Application {
                         bw.write("\n-- " + mediText);
                 if (!notesArea.getText().isEmpty())
                     bw.write("\n-- " + notesArea.getText());
-            } catch (IOException e) { e.printStackTrace(); }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             read();
             for (var btn : radios)
                 if (btn.isSelected())
