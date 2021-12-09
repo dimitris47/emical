@@ -6,7 +6,7 @@
 
     <groupId>com.dimitris47</groupId>
     <artifactId>emical</artifactId>
-    <version>3.3.1</version>
+    <version>3.4</version>
 
     <properties>
         <maven.compiler.source>16</maven.compiler.source>

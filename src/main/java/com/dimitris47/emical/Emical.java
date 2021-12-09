@@ -642,7 +642,8 @@ public class Emical extends Application {
         String report;
 
         if (daysPassed < 30) {
-            report = "Συμβάντα έως σήμερα: " + (int) events + '\n';
+            report = "Συμβάντα έως σήμερα: " + (int) events +
+                    " (" + df.format(events / daysPassed * 100) + "% των ημερών)\n";
         } else {
             report = "Συμβάντα ανά 30 ημέρες: " + df.format(evPerMonthNum) + '\n';
         }
@@ -688,13 +689,19 @@ public class Emical extends Application {
         if (fatigue > 0)
             report += "Κόπωση: " + df.format(fatigue / events * 100L) + "%\n";
 
-        report += "\nΣυμβάντα τον τελευταίο μήνα: " + lastMonthEvents;
-        if (meanDuration > 1) {
-            report += "\nΜέσος όρος διάρκειας τον τελευταίο μήνα: " + df.format(meanLastMonthDuration) + " ώρες";
+        String days;
+        if (daysPassed < 30 && daysPassed > 1) {
+            days = "τις τελευταίες " + daysPassed + " ημέρες: ";
         } else {
-            report += "\nΜέσος όρος διάρκειας τον τελευταίο μήνα: 1 ώρα";
+            days = "τον τελευταίο μήνα: ";
         }
-        report += "\nΜέσος όρος έντασης τον τελευταίο μήνα: " + df.format(meanLastMonthIntensity);
+        report += "\nΣυμβάντα " + days + lastMonthEvents;
+        if (meanDuration > 1) {
+            report += "\nΜέσος όρος διάρκειας " + days + df.format(meanLastMonthDuration) + " ώρες";
+        } else {
+            report += "\nΜέσος όρος διάρκειας " + days + "1 ώρα";
+        }
+        report += "\nΜέσος όρος έντασης " + days + df.format(meanLastMonthIntensity);
 
         return report;
     }
