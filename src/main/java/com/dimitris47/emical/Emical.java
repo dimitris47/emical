@@ -39,6 +39,7 @@ public class Emical extends Application {
     double evPerMonthNum, meanDuration, meanIntensity;
     int lastMonthEvents;
     double lastMonthDurations, lastMonthIntensities, meanLastMonthDuration, meanLastMonthIntensity;
+    String lastMonthReport;
 
     Label durationLabel, intensityLabel, placeLabel, symptomsLabel, factorsLabel, medicationsLabel,
             savedInfoLabel, evPerMonthLabel, lastMonthEventsLabel, durMeanLabel, intMeanLabel;
@@ -77,7 +78,7 @@ public class Emical extends Application {
         }
         defFont = Font.font("Segoe UI", fontSize);
         defWidth = 480 * sizeFactor;
-        defHeight = 524 * sizeFactor;
+        defHeight = 560 * sizeFactor;
         Insets ins = new Insets(0, 0, 0, 8 * sizeFactor);
 
         calendar = new DatePicker();
@@ -288,7 +289,7 @@ public class Emical extends Application {
         evPerMonthLabel = new Label("Συμβάντα ανά 30 ημέρες: ");
         evPerMonthLabel.setMinHeight(32 * sizeFactor);
         lastMonthEventsLabel = new Label("Γεγονότα τον τελευταίο μήνα: ");
-        lastMonthEventsLabel.setMinHeight(48 * sizeFactor);
+        lastMonthEventsLabel.setMinHeight(64 * sizeFactor);
         durMeanLabel = new Label("Μέσος όρος διάρκειας: ");
         intMeanLabel = new Label("Μέσος όρος έντασης: ");
         for (var label : Arrays.asList(evPerMonthLabel, durMeanLabel, intMeanLabel, lastMonthEventsLabel))
@@ -576,9 +577,20 @@ public class Emical extends Application {
                 meanIntensity = totalIntensities / lines.size();
                 intMeanLabel.setText("Μέσος όρος έντασης: " + df.format(meanIntensity));
 
-                lastMonthEventsLabel.setText("Συμβάντα τον τελευταίο μήνα: " + lastMonthEvents
-                        + "\nΜέσος όρος διάρκειας τον τελευταίο μήνα: " + df.format(meanLastMonthDuration)
-                        + "\nΜέσος όρος έντασης τον τελευταίο μήνα: " + df.format(meanLastMonthIntensity));
+                String days;
+                if (daysPassed < 30 && daysPassed > 1) {
+                    days = "τις τελευταίες " + daysPassed + " ημέρες: ";
+                } else {
+                    days = "τον τελευταίο μήνα: ";
+                }
+                lastMonthReport = "\nΣυμβάντα " + days + lastMonthEvents;
+                if (meanDuration > 1) {
+                    lastMonthReport += "\nΜέσος όρος διάρκειας " + days + df.format(meanLastMonthDuration) + " ώρες";
+                } else {
+                    lastMonthReport += "\nΜέσος όρος διάρκειας " + days + "1 ώρα";
+                }
+                lastMonthReport += "\nΜέσος όρος έντασης " + days + df.format(meanLastMonthIntensity);
+                lastMonthEventsLabel.setText(lastMonthReport);
             }
         }
     }
@@ -689,19 +701,7 @@ public class Emical extends Application {
         if (fatigue > 0)
             report += "Κόπωση: " + df.format(fatigue / events * 100L) + "%\n";
 
-        String days;
-        if (daysPassed < 30 && daysPassed > 1) {
-            days = "τις τελευταίες " + daysPassed + " ημέρες: ";
-        } else {
-            days = "τον τελευταίο μήνα: ";
-        }
-        report += "\nΣυμβάντα " + days + lastMonthEvents;
-        if (meanDuration > 1) {
-            report += "\nΜέσος όρος διάρκειας " + days + df.format(meanLastMonthDuration) + " ώρες";
-        } else {
-            report += "\nΜέσος όρος διάρκειας " + days + "1 ώρα";
-        }
-        report += "\nΜέσος όρος έντασης " + days + df.format(meanLastMonthIntensity);
+        report += lastMonthReport;
 
         return report;
     }
