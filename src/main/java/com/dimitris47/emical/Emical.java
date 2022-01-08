@@ -8,7 +8,6 @@ import javafx.scene.image.Image;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
@@ -31,8 +30,7 @@ import java.util.prefs.Preferences;
 public class Emical extends Application {
     Preferences prefs;
     static DecimalFormat df;
-    double fontSize, sizeFactor, defWidth, defHeight;
-    Font defFont;
+    double sizeFactor, defWidth, defHeight;
 
     LocalDate selDate;
     int newEventDuration, newEventIntensity, daysPassed;
@@ -69,14 +67,12 @@ public class Emical extends Application {
         dfSymbols.setGroupingSeparator('.');
         df = new DecimalFormat("#.#", dfSymbols);
         Rectangle2D screen = Screen.getPrimary().getBounds();
+
         if (screen.getWidth() >= 1920) {
-            fontSize = 15;
             sizeFactor = 1.4;
         } else {
-            fontSize = 11;
             sizeFactor = 1.2;
         }
-        defFont = Font.font("Segoe UI", fontSize);
         defWidth = 480 * sizeFactor;
         defHeight = 560 * sizeFactor;
         Insets ins = new Insets(0, 0, 0, 8 * sizeFactor);
@@ -105,20 +101,17 @@ public class Emical extends Application {
             }
         });
         calendar.setOnAction(e -> selDate = calendar.getValue());
-        calendar.getEditor().setFont(defFont);
         calendar.getEditor().setAlignment(Pos.CENTER);
         calendar.setPrefWidth(96 * sizeFactor);
 
         durationLabel = new Label("Διάρκεια (ώρες)");
         durationLabel.setMinWidth(80 * sizeFactor);
         durationLabel.setPadding(ins);
-        durationLabel.setFont(defFont);
         spinner = new Spinner<>();
         spinner.setEditable(true);
         spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99, 1, 1));
         spinner.setPrefWidth(48 * sizeFactor);
         spinner.getEditor().setAlignment(Pos.CENTER);
-        spinner.getEditor().setFont(defFont);
         spinner.getEditor().textProperty().addListener((observableValue, s, t1) -> {
             if (!t1.matches("\\d*"))
                 spinner.getEditor().setText(t1.replaceAll("[^\\d]", ""));
@@ -135,7 +128,6 @@ public class Emical extends Application {
         intensityLabel = new Label("Ένταση");
         intensityLabel.setMinWidth(48 * sizeFactor);
         intensityLabel.setPadding(ins);
-        intensityLabel.setFont(defFont);
         intensitySlider = new Slider();
         intensitySlider.setShowTickLabels(true);
         intensitySlider.setMin(1);
@@ -146,7 +138,6 @@ public class Emical extends Application {
         details.getChildren().addAll(calendar, durationLabel, spinner, intensityLabel, intensitySlider);
 
         placeLabel = new Label("Εντοπισμός πόνου");
-        placeLabel.setFont(defFont);
         radios = new ArrayList<>();
         ToggleGroup toggleGroup = new ToggleGroup();
         radLeft = new RadioButton("αριστερά");
@@ -154,16 +145,13 @@ public class Emical extends Application {
         radRight = new RadioButton("δεξιά");
         radCombined = new RadioButton("συνδυασμός");
         radios.addAll(Arrays.asList(radLeft, radCenter, radRight, radCombined));
-        for (var radio : radios) {
+        for (var radio : radios)
             radio.setToggleGroup(toggleGroup);
-            radio.setFont(defFont);
-        }
         HBox radioBox = new HBox();
         radioBox.setSpacing(12);
         radioBox.getChildren().addAll(radLeft, radCenter, radRight, radCombined);
 
         symptomsLabel = new Label("Επιπλέον συμπτώματα");
-        symptomsLabel.setFont(defFont);
         symptomBoxes = new ArrayList<>();
         aura = new CheckBox("αύρα");
         symptomBoxes.add(aura);
@@ -172,10 +160,8 @@ public class Emical extends Application {
         vertigo = new CheckBox("ίλιγγος");
         nausea = new CheckBox("ναυτία/έμετος");
         symptomBoxes.addAll(Arrays.asList(aura, photophobia, soundSens, vertigo, nausea));
-        for (var box : symptomBoxes) {
+        for (var box : symptomBoxes)
             box.setAllowIndeterminate(false);
-            box.setFont(defFont);
-        }
         HBox symptomBox = new HBox();
         symptomBox.setSpacing(12);
         symptomBox.getChildren().addAll(aura, photophobia, soundSens, vertigo, nausea);
@@ -185,17 +171,14 @@ public class Emical extends Application {
         sep1.setValignment(VPos.CENTER);
 
         factorsLabel = new Label("Επιβαρυντικοί παράγοντες");
-        factorsLabel.setFont(defFont);
         factorBoxes = new ArrayList<>();
         neckProblems = new CheckBox("αυχένας");
         badSleep = new CheckBox("κακός ύπνος");
         stress = new CheckBox("άγχος/στρες");
         fatigue = new CheckBox("κόπωση");
         factorBoxes.addAll(Arrays.asList(neckProblems, badSleep, stress, fatigue));
-        for (var box : factorBoxes) {
+        for (var box : factorBoxes)
             box.setAllowIndeterminate(false);
-            box.setFont(defFont);
-        }
         HBox circumBox = new HBox();
         circumBox.setSpacing(12);
         circumBox.getChildren().addAll(neckProblems, badSleep, stress, fatigue);
@@ -205,7 +188,6 @@ public class Emical extends Application {
         sep2.setValignment(VPos.CENTER);
 
         medicationsLabel = new Label("Φάρμακα");
-        medicationsLabel.setFont(defFont);
         mediBoxes = new ArrayList<>();
         depon = new CheckBox("Depon");
         ponstan = new CheckBox("Ponstan");
@@ -213,14 +195,10 @@ public class Emical extends Application {
         rizatriptan = new CheckBox("Rizatriptan");
         mediBoxes.addAll(Arrays.asList(depon, ponstan, imigran, rizatriptan));
         other = new CheckBox("Άλλο");
-        other.setFont(defFont);
-        for (var box : mediBoxes) {
+        for (var box : mediBoxes)
             box.setAllowIndeterminate(false);
-            box.setFont(defFont);
-        }
         otherMed = new TextField();
         otherMed.setPromptText("διευκρινήστε");
-        otherMed.setFont(defFont);
         otherMed.setOnKeyTyped(e -> other.setSelected(!otherMed.getText().equals("")));
 
         HBox mediBox = new HBox();
@@ -229,14 +207,11 @@ public class Emical extends Application {
         mediBox.getChildren().addAll(depon, ponstan, imigran, rizatriptan, other, otherMed);
 
         notesArea = new TextArea();
-        notesArea.setFont(defFont);
         notesArea.setPromptText("Γράψτε σημειώσεις εδώ");
 
         savedInfoLabel = new Label();
-        savedInfoLabel.setFont(defFont);
 
         saveEvent = new Button("Αποθήκευση συμβάντος");
-        saveEvent.setFont(defFont);
         saveEvent.setOnAction(e -> {
             try {
                 doIO(stage);
@@ -246,7 +221,6 @@ public class Emical extends Application {
         });
 
         openJournal = new Button("Άνοιγμα ημερολογίου");
-        openJournal.setFont(defFont);
         openJournal.setOnAction(e -> {
             try {
                 readJournal(stage);
@@ -256,7 +230,6 @@ public class Emical extends Application {
         });
 
         stats = new Button("Στατιστικά");
-        stats.setFont(defFont);
         stats.setOnAction(e -> {
             try {
                 getStats(stage);
@@ -266,9 +239,7 @@ public class Emical extends Application {
         });
 
         export = new Button("Εξαγωγή σε αρχείο");
-        export.setFont(defFont);
         Tooltip tip = new Tooltip("Εξαγωγή του ημερολογίου και των στατιστικών σε αρχείο κειμένου");
-        tip.setFont(defFont);
         export.setTooltip(tip);
         export.setOnAction(e -> {
             try {
@@ -292,8 +263,6 @@ public class Emical extends Application {
         lastMonthEventsLabel.setMinHeight(64 * sizeFactor);
         durMeanLabel = new Label("Μέσος όρος διάρκειας: ");
         intMeanLabel = new Label("Μέσος όρος έντασης: ");
-        for (var label : Arrays.asList(evPerMonthLabel, durMeanLabel, intMeanLabel, lastMonthEventsLabel))
-            label.setFont(defFont);
         HBox means = new HBox();
         means.setSpacing(16);
         means.getChildren().addAll(durMeanLabel, intMeanLabel);
@@ -309,7 +278,6 @@ public class Emical extends Application {
         sep4.setValignment(VPos.CENTER);
 
         infoBtn = new Button("Πληροφορίες");
-        infoBtn.setFont(defFont);
         infoBtn.setOnAction(e -> aboutClicked(stage));
 
         HBox infoBox = new HBox();
@@ -327,8 +295,9 @@ public class Emical extends Application {
         stage.setScene(scene);
         stage.setMinWidth(defWidth);
         stage.setMinHeight(defHeight);
-        stage.setTitle("Emical");
+        stage.setTitle("EmiCal");
         stage.getIcons().add(new Image("emical.png"));
+        scene.getStylesheets().add("application.css");
 
         getPrefs(stage);
         read();
@@ -443,9 +412,7 @@ public class Emical extends Application {
         journal.setResizable(true);
 
         Label label = new Label("Επεξεργασία ημερολογίου");
-        label.setFont(defFont);
         ToggleButton button = new ToggleButton("Απενεργοποιημένη");
-        button.setFont(defFont);
         button.setSelected(false);
         HBox hBox = new HBox();
         hBox.getChildren().addAll(label, button);
@@ -455,7 +422,6 @@ public class Emical extends Application {
         TextArea text = new TextArea();
         text.setEditable(false);
         text.setMinHeight(256);
-        text.setFont(defFont);
 
         File file = new File(getUserDataDirectory() + "migraineCalendar.txt");
         if (file.exists()) {
@@ -478,7 +444,6 @@ public class Emical extends Application {
             });
 
             Button OK = new Button("Αποθήκευση αλλαγών και έξοδος");
-            OK.setFont(defFont);
             OK.setOnAction(e -> {
                 try {
                     File f = new File(getUserDataDirectory() + "migraineCalendar.txt");

@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.dimitris47</groupId>
-    <artifactId>emical</artifactId>
-    <version>3.4</version>
+    <artifactId>EmiCal</artifactId>
+    <version>3.5</version>
 
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
