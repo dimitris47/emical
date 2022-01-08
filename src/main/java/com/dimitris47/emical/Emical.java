@@ -374,7 +374,7 @@ public class Emical extends Application {
                 alert.showAndWait();
             } catch (IOException e) {
                 e.printStackTrace();
-                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert = new Alert(Alert.AlertType.WARNING);
                 alert.setResizable(true);
                 alert.setTitle("Εξαγωγή αρχείου");
                 alert.setHeaderText("Αποτυχία δημιουργίας αρχείου");
@@ -407,7 +407,7 @@ public class Emical extends Application {
     }
 
     private void readJournal(Stage stage) throws IOException {
-        Dialog<String> journal = new Dialog<>();
+        Stage journal = new Stage();
         journal.setTitle("Ημερολόγιο κεφαλαλγίας");
         journal.setResizable(true);
 
@@ -453,19 +453,50 @@ public class Emical extends Application {
                     read();
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setResizable(true);
+                    alert.setTitle("Σφάλμα");
+                    alert.setHeaderText("Σφάλμα στην αποθήκευση");
+                    alert.setContentText("Οι αλλαγές δεν μπόρεσαν να αποθηκευτούν." +
+                            "\nΜήνυμα λάθους:\n" + ioException);
+                    alert.initOwner(stage);
+                    alert.showAndWait();
                 }
                 journal.close();
             });
 
+            Button Cancel = new Button("Έξοδος");
+            Cancel.setOnAction(e -> {
+                if (!textToDisplay.toString().equals(text.getText())) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Μη αποθηκευμένες αλλαγές");
+                    alert.setHeaderText("Υπάρχουν μη αποθηκευμένες αλλαγές.");
+                    alert.setContentText("θέλετε να κλείσετε το ημερολόγιο χωρίς αποθήκευση των αλλαγών;");
+
+                    ButtonType no = new ButtonType("Όχι, επιστροφή");
+                    ButtonType yes = new ButtonType("Ναι, κλείσιμο");
+                    alert.getButtonTypes().setAll(no, yes);
+
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.orElseThrow() == no) {
+                        e.consume();
+                    } else {
+                        journal.close();
+                    }
+                } else {
+                    journal.close();
+                }
+            });
+
             VBox vBox = new VBox();
-            vBox.getChildren().addAll(hBox, text, OK);
+            vBox.getChildren().addAll(hBox, text, OK, Cancel);
             vBox.setAlignment(Pos.CENTER);
             vBox.setSpacing(8);
-            vBox.setPadding(new Insets(8, 8, 0, 8));
+            vBox.setPadding(new Insets(8, 8, 8, 8));
 
-            journal.getDialogPane().setContent(vBox);
-            ButtonType Cancel = new ButtonType("Έξοδος", ButtonBar.ButtonData.CANCEL_CLOSE);
-            journal.getDialogPane().getButtonTypes().add(Cancel);
+            Scene scene = new Scene(vBox);
+            journal.setScene(scene);
+            scene.getStylesheets().add("application.css");
             journal.initModality(Modality.APPLICATION_MODAL);
             journal.initOwner(stage);
             journal.show();
