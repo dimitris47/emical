@@ -1,8 +1,8 @@
-Package: emical
-Version: 3.4
+Package: EmiCal
+Version: 3.5
 Section: misc
 Priority: optional
 Architecture: amd64
 Maintainer: DP Software <>
-Description: emical
+Description: EmiCal
 Distribution: development

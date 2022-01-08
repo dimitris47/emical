@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=emical
-GenericName=emical
-Comment=emical
-Exec=/opt/emical/emical %U
-Icon=/opt/emical/emical.png
-Terminal=false
-Type=Application
-StartupNotify=true

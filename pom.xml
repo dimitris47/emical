@@ -69,14 +69,14 @@
                             <organizationName>DP Software</organizationName>
                             <bundleJre>true</bundleJre>
                             <linuxConfig>
-                                <pngFile>target/assets/linux/emical.png</pngFile>
+                                <pngFile>target/assets/linux/EmiCal.png</pngFile>
                             </linuxConfig>
                             <winConfig>
-                                <icoFile>target\assets\windows\emical.ico</icoFile>
+                                <icoFile>target\assets\windows\EmiCal.ico</icoFile>
                             </winConfig>
                             <macConfig>
-                                <icnsFile>target/assets/mac/emical.icns</icnsFile>
-                                <volumeIcon>target/assets/mac/emical.icns</volumeIcon>
+                                <icnsFile>target/assets/mac/EmiCal.icns</icnsFile>
+                                <volumeIcon>target/assets/mac/EmiCal.icns</volumeIcon>
                             </macConfig>
                             <generateInstaller>true</generateInstaller>
                             <administratorRequired>false</administratorRequired>

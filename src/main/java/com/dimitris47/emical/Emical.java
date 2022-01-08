@@ -296,7 +296,7 @@ public class Emical extends Application {
         stage.setMinWidth(defWidth);
         stage.setMinHeight(defHeight);
         stage.setTitle("EmiCal");
-        stage.getIcons().add(new Image("emical.png"));
+        stage.getIcons().add(new Image("EmiCal.png"));
         scene.getStylesheets().add("application.css");
 
         getPrefs(stage);

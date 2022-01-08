@@ -5,11 +5,11 @@ SCRIPTPATH=$(dirname $(readlink -e "$0"))
 
 JAVA="$SCRIPTPATH/jre/bin/java"
 
-BINARY="$SCRIPTPATH/emical"
+BINARY="$SCRIPTPATH/EmiCal"
 
 
 JVMDefaultOptions=""
-JVMOptionsFile="$SCRIPTPATH/emical.l4j.ini"
+JVMOptionsFile="$SCRIPTPATH/EmiCal.l4j.ini"
 [ -f $JVMOptionsFile ] && while read -r option; do JVMDefaultOptions+=" $option"; done <<< $(sed "/^#.*$/d" $JVMOptionsFile)
 
 JVMClassPath="$BINARY"
