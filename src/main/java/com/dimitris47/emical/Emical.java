@@ -193,8 +193,8 @@ public class Emical extends Application {
         ponstan = new CheckBox("Ponstan");
         imigran = new CheckBox("Imigran");
         rizatriptan = new CheckBox("Rizatriptan");
-        mediBoxes.addAll(Arrays.asList(depon, ponstan, imigran, rizatriptan));
         other = new CheckBox("Άλλο");
+        mediBoxes.addAll(Arrays.asList(depon, ponstan, imigran, rizatriptan, other));
         for (var box : mediBoxes)
             box.setAllowIndeterminate(false);
         otherMed = new TextField();
@@ -826,6 +826,7 @@ public class Emical extends Application {
             for (var box : mediBoxes)
                 if (box.isSelected())
                     box.setSelected(false);
+            otherMed.clear();
             notesArea.clear();
         } else {
             System.err.println("Update unsuccessful, no IO done.");
