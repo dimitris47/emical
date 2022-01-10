@@ -450,7 +450,6 @@ public class Emical extends Application {
                     try (BufferedWriter bw = new BufferedWriter(new FileWriter(f, false))) {
                         bw.write(text.getText());
                     }
-                    read();
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -463,6 +462,11 @@ public class Emical extends Application {
                     alert.showAndWait();
                 }
                 journal.close();
+                try {
+                    read();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             });
 
             Button Cancel = new Button("Έξοδος");
