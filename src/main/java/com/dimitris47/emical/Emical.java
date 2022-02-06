@@ -657,7 +657,8 @@ public class Emical extends Application {
             report = "Συμβάντα έως σήμερα: " + (int) events +
                     " (" + df.format(events / daysPassed * 100) + "% των ημερών)\n";
         } else {
-            report = "Συμβάντα ανά 30 ημέρες: " + df.format(evPerMonthNum) + '\n';
+            report = "Συμβάντα ανά 30 ημέρες: " + df.format(evPerMonthNum) +
+                    " (" + df.format(events / daysPassed * 100) + "% των ημερών)\n";
         }
         if (meanDuration > 1) {
             report += "Μέση διάρκεια: " + df.format(meanDuration) + " ώρες\n";
