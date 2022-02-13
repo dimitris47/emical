@@ -282,9 +282,9 @@ public class Emical extends Application {
         sep4.setOrientation(Orientation.HORIZONTAL);
         sep4.setValignment(VPos.CENTER);
 
-        themeLbl = new Label("Theme:");
-        lightBtn = new RadioButton("Light");
-        darkBtn = new RadioButton("Dark");
+        themeLbl = new Label("Θέμα εμφάνισης:");
+        lightBtn = new RadioButton("Ανοιχτό");
+        darkBtn = new RadioButton("Σκούρο");
         group = new ToggleGroup();
         lightBtn.setToggleGroup(group);
         darkBtn.setToggleGroup(group);
@@ -857,19 +857,26 @@ public class Emical extends Application {
     }
 
     private void setPrefs(Stage stage) {
-        final String locX = "locationX";
-        prefs.put(locX, String.valueOf(stage.getX()));
-        final String locY = "locationY";
-        prefs.put(locY, String.valueOf(stage.getY()));
-        final String stWidth = "width";
-        String currWidth = String.valueOf(stage.getWidth());
-        prefs.put(stWidth, currWidth);
-        final String stHeight = "height";
-        String currHeight = String.valueOf(stage.getHeight());
-        prefs.put(stHeight, currHeight);
+        prefs.put("locationX", String.valueOf(stage.getX()));
+        prefs.put("locationY", String.valueOf(stage.getY()));
+        prefs.put("width", String.valueOf(stage.getWidth()));
+        prefs.put("height", String.valueOf(stage.getHeight()));
+        if (lightBtn.isSelected()) {
+            prefs.put("theme", "light");
+        } else {
+            prefs.put("theme", "dark");
+        }
     }
 
     private void getPrefs(Stage stage) {
+        final String theme = prefs.get("theme", "light");
+        if (Objects.equals(theme, "dark")) {
+            darkBtn.setSelected(true);
+            stage.getScene().getStylesheets().add("dark-theme.css");
+        } else {
+            lightBtn.setSelected(true);
+            stage.getScene().getStylesheets().remove("dark-theme.css");
+        }
         final double savedX = Double.parseDouble(prefs.get("locationX", "128.0"));
         final double savedY = Double.parseDouble(prefs.get("locationY", "64.0"));
         stage.setX(savedX);
