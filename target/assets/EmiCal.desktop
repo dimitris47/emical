@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=EmiCal
-GenericName=EmiCal
-Comment=EmiCal
-Exec=/opt/EmiCal/EmiCal %U
-Icon=/opt/EmiCal/EmiCal.png
-Terminal=false
-Type=Application
-StartupNotify=true

@@ -59,6 +59,11 @@ public class Emical extends Application {
 
     MigraineEvent event;
 
+    Label themeLbl;
+    RadioButton lightBtn, darkBtn;
+    ToggleGroup group;
+
+
     @Override
     public void start(Stage stage) throws IOException {
         prefs = Preferences.userNodeForPackage(Emical.class);
@@ -277,12 +282,20 @@ public class Emical extends Application {
         sep4.setOrientation(Orientation.HORIZONTAL);
         sep4.setValignment(VPos.CENTER);
 
+        themeLbl = new Label("Theme:");
+        lightBtn = new RadioButton("Light");
+        darkBtn = new RadioButton("Dark");
+        group = new ToggleGroup();
+        lightBtn.setToggleGroup(group);
+        darkBtn.setToggleGroup(group);
+
         infoBtn = new Button("Πληροφορίες");
         infoBtn.setOnAction(e -> aboutClicked(stage));
 
         HBox infoBox = new HBox();
-        infoBox.getChildren().add(infoBtn);
+        infoBox.getChildren().addAll(themeLbl, lightBtn, darkBtn, infoBtn);
         infoBox.setAlignment(Pos.CENTER_RIGHT);
+        infoBox.setSpacing(8);
 
         VBox box = new VBox();
         box.setPadding(new Insets(8));
@@ -298,6 +311,9 @@ public class Emical extends Application {
         stage.setTitle("EmiCal");
         stage.getIcons().add(new Image("EmiCal.png"));
         scene.getStylesheets().add("application.css");
+
+        lightBtn.setOnAction(e -> scene.getStylesheets().remove("dark-theme.css"));
+        darkBtn.setOnAction(e -> scene.getStylesheets().add("dark-theme.css"));
 
         getPrefs(stage);
         read();
@@ -501,6 +517,8 @@ public class Emical extends Application {
             Scene scene = new Scene(vBox);
             journal.setScene(scene);
             scene.getStylesheets().add("application.css");
+            if (darkBtn.isSelected())
+                scene.getStylesheets().add("dark-theme.css");
             journal.initModality(Modality.APPLICATION_MODAL);
             journal.initOwner(stage);
             journal.show();
