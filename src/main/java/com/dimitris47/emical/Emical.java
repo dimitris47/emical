@@ -347,15 +347,10 @@ public class Emical extends Application {
         for (var btn : radios)
             if (btn.isSelected())
                 return true;
-        for (var box : symptomBoxes)
-            if (box.isSelected())
-                return true;
-        for (var box : factorBoxes)
-            if (box.isSelected())
-                return true;
-        for (var box : mediBoxes)
-            if (box.isSelected())
-                return true;
+        for (var b : Arrays.asList(symptomBoxes, factorBoxes, mediBoxes))
+            for (var box : b)
+                if (box.isSelected())
+                    return true;
         return false;
     }
 
@@ -838,16 +833,9 @@ public class Emical extends Application {
             }
             read();
             for (var btn : radios)
-                if (btn.isSelected())
-                    btn.setSelected(false);
-            for (var box : symptomBoxes)
-                if (box.isSelected())
-                    box.setSelected(false);
-            for (var box : factorBoxes)
-                if (box.isSelected())
-                    box.setSelected(false);
-            for (var box : mediBoxes)
-                if (box.isSelected())
+                btn.setSelected(false);
+            for (var b : Arrays.asList(symptomBoxes, factorBoxes, mediBoxes))
+                for (var box : b)
                     box.setSelected(false);
             otherMed.clear();
             notesArea.clear();
