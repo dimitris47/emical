@@ -833,10 +833,12 @@ public class Emical extends Application {
             }
             read();
             for (var btn : radios)
-                btn.setSelected(false);
+                if (btn.isSelected())
+                    btn.setSelected(false);
             for (var b : Arrays.asList(symptomBoxes, factorBoxes, mediBoxes))
                 for (var box : b)
-                    box.setSelected(false);
+                    if (box.isSelected())
+                        box.setSelected(false);
             otherMed.clear();
             notesArea.clear();
         } else {
