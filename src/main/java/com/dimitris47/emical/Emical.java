@@ -63,7 +63,6 @@ public class Emical extends Application {
     RadioButton lightBtn, darkBtn;
     ToggleGroup group;
 
-
     @Override
     public void start(Stage stage) throws IOException {
         prefs = Preferences.userNodeForPackage(Emical.class);
@@ -264,7 +263,7 @@ public class Emical extends Application {
 
         evPerMonthLabel = new Label("Συμβάντα ανά 30 ημέρες: ");
         evPerMonthLabel.setMinHeight(32 * sizeFactor);
-        lastMonthEventsLabel = new Label("Γεγονότα τον τελευταίο μήνα: ");
+        lastMonthEventsLabel = new Label("Συμβάντα τον τελευταίο μήνα: ");
         lastMonthEventsLabel.setMinHeight(64 * sizeFactor);
         durMeanLabel = new Label("Μέση διάρκεια: ");
         intMeanLabel = new Label("Μέση ένταση: ");
@@ -624,100 +623,78 @@ public class Emical extends Application {
     }
 
     private String createStats() throws IOException {
-        double events = 0,
-                left = 0, front = 0, right = 0, combination = 0,
-                aura = 0, photo = 0, sound = 0, vertigo = 0, nausea = 0,
-                neck = 0, sleep = 0, stress = 0, fatigue = 0;
+        Box events = new Box();
+        Box left = new Box();
+        Box front = new Box();
+        Box right = new Box();
+        Box combination = new Box();
+        Box aura = new Box();
+        Box photo = new Box();
+        Box sound = new Box();
+        Box vertigo = new Box();
+        Box nausea = new Box();
+        Box neck = new Box();
+        Box sleep = new Box();
+        Box stress = new Box();
+        Box fatigue = new Box();
+
         read();
 
         InputStream in = new FileInputStream(getUserDataDirectory() + "migraineCalendar.txt");
         BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+
+        String[] lineStarts = {
+                "Συμβάν", "-- αριστερά", "-- μπροστά", "-- δεξιά", "-- συνδυασμός",
+                "-- αύρα", "-- φωτοφοβία", "-- ηχοφοβία", "-- ίλιγγος", "-- ναυτία/έμετος",
+                "-- αυχένας", "-- κακός ύπνος", "-- άγχος/στρες", "-- κόπωση"};
+        Box[] boxes = {
+                events, left, front, right, combination,
+                aura, photo, sound, vertigo, nausea,
+                neck, sleep, stress, fatigue};
+
         String line;
-        while ((line = reader.readLine()) != null) {
-            if (line.startsWith("Συμβάν"))
-                events++;
-            if (line.startsWith("-- αριστερά"))
-                left++;
-            if (line.startsWith("-- μπροστά"))
-                front++;
-            if (line.startsWith("-- δεξιά"))
-                right++;
-            if (line.startsWith("-- συνδυασμός"))
-                combination++;
-            if (line.startsWith("-- αύρα"))
-                aura++;
-            if (line.startsWith("-- φωτοφοβία"))
-                photo++;
-            if (line.startsWith("-- ηχοφοβία"))
-                sound++;
-            if (line.startsWith("-- ίλιγγος"))
-                vertigo++;
-            if (line.startsWith("-- ναυτία/έμετος"))
-                nausea++;
-            if (line.startsWith("-- αυχένας"))
-                neck++;
-            if (line.startsWith("-- κακός ύπνος"))
-                sleep++;
-            if (line.startsWith("-- άγχος/στρες"))
-                stress++;
-            if (line.startsWith("-- κόπωση"))
-                fatigue++;
-        }
+        while ((line = reader.readLine()) != null)
+            for (int i = 0; i < lineStarts.length; i++)
+                if (line.startsWith(lineStarts[i]))
+                    boxes[i].addOne();
 
-        String report;
-
+        StringBuilder report;
         if (daysPassed < 30) {
-            report = "Συμβάντα έως σήμερα: " + (int) events +
-                    " (" + df.format(events / daysPassed * 100) + "% των ημερών)\n";
+            report = new StringBuilder("Συμβάντα έως σήμερα: " + (int) events.value +
+                    " (" + df.format(events.value / daysPassed * 100) + "% των ημερών)\n");
         } else {
-            report = "Συμβάντα ανά 30 ημέρες: " + df.format(evPerMonthNum) +
-                    " (" + df.format(events / daysPassed * 100) + "% των ημερών)\n";
+            report = new StringBuilder("Συμβάντα ανά 30 ημέρες: " + df.format(evPerMonthNum) +
+                    " (" + df.format(events.value / daysPassed * 100) + "% των ημερών)\n");
         }
         if (meanDuration > 1) {
-            report += "Μέση διάρκεια: " + df.format(meanDuration) + " ώρες\n";
+            report.append("Μέση διάρκεια: ").append(df.format(meanDuration)).append(" ώρες\n");
         } else {
-            report += "Μέση διάρκεια: 1 ώρα\n";
+            report.append("Μέση διάρκεια: 1 ώρα\n");
         }
-        report += "Μέση ένταση: " + df.format(meanIntensity) + '\n';
+        report.append("Μέση ένταση: ").append(df.format(meanIntensity)).append('\n');
 
-        if (left > 0 || front > 0 || right > 0 || combination > 0)
-            report += "\nΕντοπισμός πόνου:\n";
-        if (left > 0)
-            report += "Αριστερά: " + df.format(left / events * 100L) + "%\n";
-        if (front > 0)
-            report += "Μπροστά: " + df.format(front / events * 100L) + "%\n";
-        if (right > 0)
-            report += "Δεξιά: " + df.format(right / events * 100L) + "%\n";
-        if (combination > 0)
-            report += "Συνδυασμός: " + df.format(combination / events * 100L) + "%\n";
+        if (left.value > 0 || front.value > 0 || right.value > 0 || combination.value > 0)
+            report.append("\nΕντοπισμός πόνου:\n");
+        for (int i = 1; i < 5; i++)
+            if (boxes[i].value > 0)
+                report.append(lineStarts[i].split("-- ")[1]).append(": ")
+                        .append(df.format(boxes[i].value / events.value * 100L)).append("%\n");
+        if (aura.value > 0 || photo.value > 0 || sound.value > 0 || vertigo.value > 0 || nausea.value > 0)
+            report.append("\nΕπιβαρυντικοί παράγοντες:\n");
+        for (int j = 5; j < 10; j++)
+            if (boxes[j].value > 0)
+                report.append(lineStarts[j].split("-- ")[1]).append(": ")
+                        .append(df.format(boxes[j].value / events.value * 100L)).append("%\n");
+        if (neck.value > 0 || sleep.value > 0 || stress.value > 0 || fatigue.value > 0)
+            report.append("\nΕπιβαρυντικοί παράγοντες:\n");
+        for (int k = 10; k < 14; k++)
+            if (boxes[k].value > 0)
+                report.append(lineStarts[k].split("-- ")[1]).append(": ")
+                        .append(df.format(boxes[k].value / events.value * 100L)).append("%\n");
 
-        if (aura > 0 || photo > 0 || sound > 0 || vertigo > 0 || nausea > 0)
-            report += "\nΕπιπλέον συμπτώματα:\n";
-        if (aura > 0)
-            report += "Αύρα: " + df.format(aura / events * 100L) + "%\n";
-        if (photo > 0)
-            report += "Φωτοφοβία: " + df.format(photo / events * 100L) + "%\n";
-        if (sound > 0)
-            report += "Ηχοφοβία: " + df.format(sound / events * 100L) + "%\n";
-        if (vertigo > 0)
-            report += "Ίλιγγος: " + df.format(vertigo / events * 100L) + "%\n";
-        if (nausea > 0)
-            report += "Ναυτία/έμετος: " + df.format(nausea / events * 100L) + "%\n";
+        report.append(lastMonthReport);
 
-        if (neck > 0 || sleep > 0 || stress > 0 || fatigue > 0)
-            report += "\nΕπιβαρυντικοί παράγοντες:\n";
-        if (neck > 0)
-            report += "Αυχένας: " + df.format(neck / events * 100L) + "%\n";
-        if (sleep > 0)
-            report += "Κακός ύπνος: " + df.format(sleep / events * 100L) + "%\n";
-        if (stress > 0)
-            report += "Άγχος/στρες: " + df.format(stress / events * 100L) + "%\n";
-        if (fatigue > 0)
-            report += "Κόπωση: " + df.format(fatigue / events * 100L) + "%\n";
-
-        report += lastMonthReport;
-
-        return report;
+        return report.toString();
     }
 
     private void noCalendar(Stage stage) {
@@ -759,10 +736,11 @@ public class Emical extends Application {
                     mediTexts.add(box.getText());
             }
             if (other.isSelected())
-                if (!otherMed.getText().isEmpty())
+                if (!otherMed.getText().isEmpty()) {
                     mediTexts.add(otherMed.getText());
-                else
+                } else {
                     mediTexts.add("άλλο φάρμακο");
+                }
             return mediTexts != null;
         }
         return false;
