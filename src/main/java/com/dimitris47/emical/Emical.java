@@ -673,24 +673,27 @@ public class Emical extends Application {
         }
         report.append("Μέση ένταση: ").append(df.format(meanIntensity)).append('\n');
 
-        if (left.value > 0 || front.value > 0 || right.value > 0 || combination.value > 0)
+        if (left.value > 0 || front.value > 0 || right.value > 0 || combination.value > 0) {
             report.append("\nΕντοπισμός πόνου:\n");
-        for (int i = 1; i < 5; i++)
-            if (boxes[i].value > 0)
-                report.append(lineStarts[i].split("-- ")[1]).append(": ")
-                        .append(df.format(boxes[i].value / events.value * 100L)).append("%\n");
-        if (aura.value > 0 || photo.value > 0 || sound.value > 0 || vertigo.value > 0 || nausea.value > 0)
+            for (int i = 1; i < 5; i++)
+                if (boxes[i].value > 0)
+                    report.append(lineStarts[i].split("-- ")[1]).append(": ")
+                            .append(df.format(boxes[i].value / events.value * 100L)).append("%\n");
+        }
+        if (aura.value > 0 || photo.value > 0 || sound.value > 0 || vertigo.value > 0 || nausea.value > 0) {
             report.append("\nΕπιβαρυντικοί παράγοντες:\n");
-        for (int j = 5; j < 10; j++)
-            if (boxes[j].value > 0)
-                report.append(lineStarts[j].split("-- ")[1]).append(": ")
-                        .append(df.format(boxes[j].value / events.value * 100L)).append("%\n");
-        if (neck.value > 0 || sleep.value > 0 || stress.value > 0 || fatigue.value > 0)
+            for (int j = 5; j < 10; j++)
+                if (boxes[j].value > 0)
+                    report.append(lineStarts[j].split("-- ")[1]).append(": ")
+                            .append(df.format(boxes[j].value / events.value * 100L)).append("%\n");
+        }
+        if (neck.value > 0 || sleep.value > 0 || stress.value > 0 || fatigue.value > 0) {
             report.append("\nΕπιβαρυντικοί παράγοντες:\n");
-        for (int k = 10; k < 14; k++)
-            if (boxes[k].value > 0)
-                report.append(lineStarts[k].split("-- ")[1]).append(": ")
-                        .append(df.format(boxes[k].value / events.value * 100L)).append("%\n");
+            for (int k = 10; k < 14; k++)
+                if (boxes[k].value > 0)
+                    report.append(lineStarts[k].split("-- ")[1]).append(": ")
+                            .append(df.format(boxes[k].value / events.value * 100L)).append("%\n");
+        }
 
         report.append(lastMonthReport);
 

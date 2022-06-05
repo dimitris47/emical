@@ -6,7 +6,7 @@
 
     <groupId>com.dimitris47</groupId>
     <artifactId>EmiCal</artifactId>
-    <version>3.10</version>
+    <version>3.11</version>
 
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
