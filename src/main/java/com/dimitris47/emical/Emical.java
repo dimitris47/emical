@@ -392,7 +392,7 @@ public class Emical extends Application {
 
         if (exp != null) {
             Alert alert;
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(exp, false))) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(exp, StandardCharsets.UTF_8, false))) {
                 bw.write(textToExport);
                 alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setResizable(true);
@@ -812,7 +812,7 @@ public class Emical extends Application {
                 Path path = Paths.get(getUserDataDirectory());
                 Files.createDirectories(path);
             }
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(f, true))) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(f, StandardCharsets.UTF_8, true))) {
                 bw.write("\nΣυμβάν: " + event.toString());
                 if (isChecked("radio"))
                     for (var radioText : radioTexts)
