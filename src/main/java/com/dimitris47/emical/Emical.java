@@ -477,7 +477,8 @@ public class Emical extends Application {
                 try {
                     File f = new File(getUserDataDirectory() + "migraineCalendar.txt");
                     try (BufferedWriter bw = new BufferedWriter(new FileWriter(f, StandardCharsets.UTF_8, false))) {
-                        bw.write(text.getText());
+                        final String txt = text.getText();
+                        bw.write(txt);
                     }
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
