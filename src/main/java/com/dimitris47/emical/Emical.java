@@ -136,8 +136,9 @@ public class Emical extends Application {
         spinner.setPrefWidth(48 * sizeFactor);
         spinner.getEditor().setAlignment(Pos.CENTER);
         spinner.getEditor().textProperty().addListener((observableValue, s, t1) -> {
-            if (!t1.matches("\\d*"))
+            if (!t1.matches("\\d*")) {
                 spinner.getEditor().setText(t1.replaceAll("[^\\d]", ""));
+            }
         });
         spinner.setOnScroll((ScrollEvent e) -> {
             int deltaY = (int) e.getDeltaY();
@@ -168,8 +169,9 @@ public class Emical extends Application {
         radRight = new RadioButton("δεξιά");
         radCombined = new RadioButton("συνδυασμός");
         radios.addAll(Arrays.asList(radLeft, radCenter, radRight, radCombined));
-        for (var radio : radios)
+        for (var radio : radios) {
             radio.setToggleGroup(toggleGroup);
+        }
         HBox radioBox = new HBox();
         radioBox.setSpacing(12);
         radioBox.getChildren().addAll(radLeft, radCenter, radRight, radCombined);
@@ -183,8 +185,6 @@ public class Emical extends Application {
         vertigo = new CheckBox("ίλιγγος");
         nausea = new CheckBox("ναυτία/έμετος");
         symptomBoxes.addAll(Arrays.asList(aura, photophobia, soundSens, vertigo, nausea));
-        for (var box : symptomBoxes)
-            box.setAllowIndeterminate(false);
         HBox symptomBox = new HBox();
         symptomBox.setSpacing(12);
         symptomBox.getChildren().addAll(aura, photophobia, soundSens, vertigo, nausea);
@@ -200,8 +200,6 @@ public class Emical extends Application {
         stress = new CheckBox("άγχος/στρες");
         fatigue = new CheckBox("κόπωση");
         factorBoxes.addAll(Arrays.asList(neckProblems, badSleep, stress, fatigue));
-        for (var box : factorBoxes)
-            box.setAllowIndeterminate(false);
         HBox circumBox = new HBox();
         circumBox.setSpacing(12);
         circumBox.getChildren().addAll(neckProblems, badSleep, stress, fatigue);
@@ -218,11 +216,15 @@ public class Emical extends Application {
         rizatriptan = new CheckBox("Rizatriptan");
         other = new CheckBox("Άλλο");
         mediBoxes.addAll(Arrays.asList(depon, ponstan, imigran, rizatriptan, other));
-        for (var box : mediBoxes)
-            box.setAllowIndeterminate(false);
         otherMed = new TextField();
         otherMed.setPromptText("διευκρινήστε");
         otherMed.setOnKeyTyped(e -> other.setSelected(!otherMed.getText().equals("")));
+
+        for (var boxes : Arrays.asList(symptomBoxes, factorBoxes, mediBoxes)) {
+            for (var box : boxes) {
+                box.setAllowIndeterminate(false);
+            }
+        }
 
         HBox mediBox = new HBox();
         mediBox.setSpacing(12);
@@ -360,15 +362,21 @@ public class Emical extends Application {
         if (!Objects.equals(calendar.getValue(), LocalDate.now()) ||
                 spinner.getValue() > 1 ||
                 intensitySlider.getValue() > 1 ||
-                !notesArea.getText().isEmpty())
+                !notesArea.getText().isEmpty()) {
             return true;
-        for (var btn : radios)
-            if (btn.isSelected())
+        }
+        for (var btn : radios) {
+            if (btn.isSelected()) {
                 return true;
-        for (var b : Arrays.asList(symptomBoxes, factorBoxes, mediBoxes))
-            for (var box : b)
-                if (box.isSelected())
+            }
+        }
+        for (var b : Arrays.asList(symptomBoxes, factorBoxes, mediBoxes)) {
+            for (var box : b) {
+                if (box.isSelected()) {
                     return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -379,8 +387,9 @@ public class Emical extends Application {
             InputStream in = new FileInputStream(getUserDataDirectory() + "migraineCalendar.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
             String line;
-            while ((line = reader.readLine()) != null)
+            while ((line = reader.readLine()) != null) {
                 textToExtract.append(line.concat("\n"));
+            }
         }
         String textToExport = "Ημερολόγιο:" + textToExtract + '\n' +
                 "\nΣτατιστικά:\n" + createStats();
@@ -424,7 +433,7 @@ public class Emical extends Application {
                 
                 Application icon by freepik.com
 
-                \u00A9 2021 Dimitris Psathas""";
+                © 2021 Dimitris Psathas""";
 
         Alert infoDialog = new Alert(Alert.AlertType.INFORMATION);
         infoDialog.setResizable(true);
@@ -458,8 +467,9 @@ public class Emical extends Application {
             BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
             String line;
             StringBuilder textToDisplay = new StringBuilder();
-            while ((line = reader.readLine()) != null)
+            while ((line = reader.readLine()) != null) {
                 textToDisplay.append(line.concat("\n"));
+            }
             text.setText(textToDisplay.toString());
 
             button.setOnAction(e -> {
@@ -531,8 +541,9 @@ public class Emical extends Application {
             Scene scene = new Scene(vBox);
             journal.setScene(scene);
             scene.getStylesheets().add("application.css");
-            if (darkBtn.isSelected())
+            if (darkBtn.isSelected()) {
                 scene.getStylesheets().add("dark-theme.css");
+            }
             journal.initModality(Modality.APPLICATION_MODAL);
             journal.initOwner(stage);
             journal.show();
@@ -548,9 +559,11 @@ public class Emical extends Application {
             BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
             String line;
             ArrayList<String> lines = new ArrayList<>();
-            while ((line = reader.readLine()) != null)
-                if (line.startsWith("Συμβάν"))
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Συμβάν")) {
                     lines.add(line);
+                }
+            }
 
             if (!lines.isEmpty()) {
                 String firstLine = lines.get(0);
@@ -601,8 +614,13 @@ public class Emical extends Application {
                     }
                 }
 
-                meanLastMonthDuration = lastMonthDurations / lastMonthEvents;
-                meanLastMonthIntensity = lastMonthIntensities / lastMonthEvents;
+                if (lastMonthEvents > 0) {
+                    meanLastMonthDuration = lastMonthDurations / lastMonthEvents;
+                    meanLastMonthIntensity = lastMonthIntensities / lastMonthEvents;
+                } else {
+                    meanLastMonthDuration = 0;
+                    meanLastMonthIntensity = 0;
+                }
 
                 meanDuration = totalDurations / lines.size();
                 durMeanLabel.setText("Μέση διάρκεια: " + df.format(meanDuration) + " ώρες");
@@ -673,10 +691,13 @@ public class Emical extends Application {
                 neck, sleep, stress, fatigue};
 
         String line;
-        while ((line = reader.readLine()) != null)
-            for (int i = 0; i < lineStarts.length; i++)
-                if (line.startsWith(lineStarts[i]))
+        while ((line = reader.readLine()) != null) {
+            for (int i = 0; i < lineStarts.length; i++) {
+                if (line.startsWith(lineStarts[i])) {
                     boxes[i].addOne();
+                }
+            }
+        }
 
         StringBuilder report;
         if (daysPassed < 30) {
@@ -695,24 +716,30 @@ public class Emical extends Application {
 
         if (left.value > 0 || front.value > 0 || right.value > 0 || combination.value > 0) {
             report.append("\nΕντοπισμός πόνου:\n");
-            for (int i = 1; i < 5; i++)
-                if (boxes[i].value > 0)
+            for (int i = 1; i < 5; i++) {
+                if (boxes[i].value > 0) {
                     report.append(lineStarts[i].split("-- ")[1]).append(": ")
                             .append(df.format(boxes[i].value / events.value * 100L)).append("%\n");
+                }
+            }
         }
         if (aura.value > 0 || photo.value > 0 || sound.value > 0 || vertigo.value > 0 || nausea.value > 0) {
             report.append("\nΕπιβαρυντικοί παράγοντες:\n");
-            for (int j = 5; j < 10; j++)
-                if (boxes[j].value > 0)
+            for (int j = 5; j < 10; j++) {
+                if (boxes[j].value > 0) {
                     report.append(lineStarts[j].split("-- ")[1]).append(": ")
                             .append(df.format(boxes[j].value / events.value * 100L)).append("%\n");
+                }
+            }
         }
         if (neck.value > 0 || sleep.value > 0 || stress.value > 0 || fatigue.value > 0) {
             report.append("\nΕπιβαρυντικοί παράγοντες:\n");
-            for (int k = 10; k < 14; k++)
-                if (boxes[k].value > 0)
+            for (int k = 10; k < 14; k++) {
+                if (boxes[k].value > 0) {
                     report.append(lineStarts[k].split("-- ")[1]).append(": ")
                             .append(df.format(boxes[k].value / events.value * 100L)).append("%\n");
+                }
+            }
         }
 
         report.append(lastMonthReport);
@@ -736,34 +763,42 @@ public class Emical extends Application {
         boxTexts = new ArrayList<>();
         mediTexts = new ArrayList<>();
         if (kind.equals("radio")) {
-            for (var radio : radios)
-                if (radio.isSelected())
+            for (var radio : radios) {
+                if (radio.isSelected()) {
                     radioTexts.add(radio.getText());
+                }
+            }
             return radioTexts != null;
         }
         if (kind.equals("symptom")) {
-            for (var box : symptomBoxes)
-                if (box.isSelected())
+            for (var box : symptomBoxes) {
+                if (box.isSelected()) {
                     symptomTexts.add(box.getText());
+                }
+            }
             return symptomTexts != null;
         }
         if (kind.equals("box")) {
-            for (var box : factorBoxes)
-                if (box.isSelected())
+            for (var box : factorBoxes) {
+                if (box.isSelected()) {
                     boxTexts.add(box.getText());
+                }
+            }
             return boxTexts != null;
         }
         if (kind.equals("medi")) {
             for (var box : mediBoxes) {
-                if (box.isSelected())
+                if (box.isSelected()) {
                     mediTexts.add(box.getText());
+                }
             }
-            if (other.isSelected())
+            if (other.isSelected()) {
                 if (!otherMed.getText().isEmpty()) {
                     mediTexts.add(otherMed.getText());
                 } else {
                     mediTexts.add("άλλο φάρμακο");
                 }
+            }
             return mediTexts != null;
         }
         return false;
@@ -773,8 +808,9 @@ public class Emical extends Application {
         try {
             newEventDuration = Integer.parseInt(String.valueOf(spinner.getValue()));
             newEventIntensity = Integer.parseInt(String.valueOf(Math.round(intensitySlider.getValue())));
-            if (selDate == null)
+            if (selDate == null) {
                 selDate = LocalDate.now();
+            }
             event = new MigraineEvent(selDate, newEventDuration, newEventIntensity);
             savedInfoLabel.setText(event.toFormattedString());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -815,31 +851,45 @@ public class Emical extends Application {
             }
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(f, StandardCharsets.UTF_8, true))) {
                 bw.write("\nΣυμβάν: " + event.toString());
-                if (isChecked("radio"))
-                    for (var radioText : radioTexts)
+                if (isChecked("radio")) {
+                    for (var radioText : radioTexts) {
                         bw.write("\n-- " + radioText);
-                if (isChecked("symptom"))
-                    for (var symptomText : symptomTexts)
+                    }
+                }
+                if (isChecked("symptom")) {
+                    for (var symptomText : symptomTexts) {
                         bw.write("\n-- " + symptomText);
-                if (isChecked("box"))
-                    for (var boxText : boxTexts)
+                    }
+                }
+                if (isChecked("box")) {
+                    for (var boxText : boxTexts) {
                         bw.write("\n-- " + boxText);
-                if (isChecked("medi"))
-                    for (var mediText : mediTexts)
+                    }
+                }
+                if (isChecked("medi")) {
+                    for (var mediText : mediTexts) {
                         bw.write("\n-- " + mediText);
-                if (!notesArea.getText().isEmpty())
+                    }
+                }
+                if (!notesArea.getText().isEmpty()) {
                     bw.write("\n-- " + notesArea.getText());
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
             read();
-            for (var btn : radios)
-                if (btn.isSelected())
+            for (var btn : radios) {
+                if (btn.isSelected()) {
                     btn.setSelected(false);
-            for (var b : Arrays.asList(symptomBoxes, factorBoxes, mediBoxes))
-                for (var box : b)
-                    if (box.isSelected())
+                }
+            }
+            for (var b : Arrays.asList(symptomBoxes, factorBoxes, mediBoxes)) {
+                for (var box : b) {
+                    if (box.isSelected()) {
                         box.setSelected(false);
+                    }
+                }
+            }
             otherMed.clear();
             notesArea.clear();
         } else {

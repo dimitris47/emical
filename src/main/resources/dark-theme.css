@@ -3,10 +3,10 @@
     -fx-focus-color: -fx-accent;
     -fx-base: #191919;
     -fx-control-inner-background: derive(-fx-base, 35%);
-    -fx-control-inner-background-alt: -fx-control-inner-background ;
+    -fx-control-inner-background-alt: -fx-control-inner-background;
 }
 
-.label{
+.label {
     -fx-text-fill: lightgray;
 }
 
@@ -14,11 +14,12 @@
     -fx-prompt-text-fill: gray;
 }
 
-.button{
+.button {
     -fx-focus-traversable: false;
+    -fx-base: #191919;
 }
 
-.button:hover{
+.button:hover {
     -fx-text-fill: white;
 }
 
@@ -28,10 +29,10 @@
     -fx-border-width: 1px;
 }
 
-.scroll-bar{
+.scroll-bar {
     -fx-background-color: derive(-fx-base, 45%)
 }
 
 .button:default {
-    -fx-base: -fx-accent ;
+    -fx-base: -fx-accent;
 }
